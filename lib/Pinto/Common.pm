@@ -1,6 +1,6 @@
 package Pinto::Common;
 
-# ABSTRACT: Common modules for the pinto-* utilities
+# ABSTRACT: Common libraries for the L<Pinto> suite
 
 use strict;
 use warnings;
@@ -17,8 +17,8 @@ __END__
 =head1 DESCRIPTION
 
 This distribution exists to provide modules that are used across
-L<pinto-admin>, L<pinto-server>, and L<pinto-remote>.  There are no
-user-serviceable parts in this distribution.
+L<pinto> and L<pintod>.  There are no user-serviceable parts in
+this distribution.
 
 =cut
 
