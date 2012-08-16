@@ -331,7 +331,7 @@ the C<prod> stack.
 
 As development proceeds, you may upgrade or add several packages on
 the C<dev> stack.  If an upgraded package breaks your application, then
-you'll place a pin in that package on the c<prod> stack to signal that
+you'll place a pin in that package on the C<prod> stack to signal that
 it shouldn't be upgraded.
 
 As you reach the end of the development cycle, you can merge all the
