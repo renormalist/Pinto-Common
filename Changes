@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+     Just documentation edits.
+
 0.045     2012-07-15 01:21:02 America/Los_Angeles
 
      Added StackAt and StackDefault types.
