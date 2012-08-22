@@ -1,16 +1,16 @@
 # NAME
 
-Pinto::Common - Common modules for the pinto-\* utilities
+Pinto::Common - Common libraries for the [Pinto](http://search.cpan.org/perldoc?Pinto) suite
 
 # VERSION
 
-version 0.045
+version 0.046
 
 # DESCRIPTION
 
 This distribution exists to provide modules that are used across
-[pinto-admin](http://search.cpan.org/perldoc?pinto-admin), [pinto-server](http://search.cpan.org/perldoc?pinto-server), and [pinto-remote](http://search.cpan.org/perldoc?pinto-remote).  There are no
-user-serviceable parts in this distribution.
+[pinto](http://search.cpan.org/perldoc?pinto) and [pintod](http://search.cpan.org/perldoc?pintod).  There are no user-serviceable parts in
+this distribution.
 
 # SUPPORT
 
