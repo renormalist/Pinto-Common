@@ -1,6 +1,6 @@
-package Pinto::Constants;
-
 # ABSTRACT: Constants used across the Pinto utilities
+
+package Pinto::Constants;
 
 use strict;
 use warnings;
