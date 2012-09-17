@@ -33,7 +33,7 @@ use namespace::autoclean;
 subtype Author,
   as Str,
   where   { m/^ [A-Z0-9-]+ $/x },
-  message { "The author id ($_) must be alphanumeric" };
+  message { 'The author id (' . (defined() ? $_ : 'undef') . ') must be alphanumeric' };
 
 coerce Author,
   from Str,
@@ -43,8 +43,8 @@ coerce Author,
 
 subtype StackName,
   as      Str,
-  where   { m/^ [a-z0-9-_:]+ $/x },
-  message { "The stack name ($_) must be alphanumeric" };
+  where   { m/^ [a-z0-9-_]+ $/x },
+  message { 'The stack name (' . (defined() ? $_ : 'undef') . ') must be alphanumeric' };
 
 coerce StackName,
   from Str,
@@ -55,7 +55,7 @@ coerce StackName,
 subtype StackAt,
   as      Str,
   where   { $_ eq '@' },
-  message { q{StackAt must be '@'} };
+  message { q{The stack name must be '@'} };
 
 #-----------------------------------------------------------------------------
 
@@ -66,8 +66,8 @@ subtype StackDefault,
 
 subtype PropertyName,
   as      Str,
-  where   { length and not m/[^a-z0-9-_:]/x },
-  message { "The property name ($_) must be alphanumeric" };
+  where   { m/^ [a-z0-9-_]+ $/x },
+  message { 'The property name (' . (defined() ? $_ : 'undef') . 'must be alphanumeric' };
 
 coerce PropertyName,
   from Str,

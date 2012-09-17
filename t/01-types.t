@@ -28,11 +28,13 @@ is(ref $t->uri(), 'URI::http', 'Coerced URI from string');
 $t->author('hello');
 is($t->author, 'HELLO', 'Coerced Author from string');
 throws_ok {$t->author('foo bar!') } qr/alphanumeric/, 'Author must be alphanumeric';
+throws_ok {$t->author(undef) } qr/alphanumeric/, 'Author must not be undef';
 throws_ok {$t->author('') } qr/alphanumeric/, 'Author must have length';
 
 $t->stack('MyStack');
 is($t->stack, 'mystack', 'Coerced StackName from string');
 throws_ok {$t->stack('foo bar!') } qr/alphanumeric/, 'StackName must be alphanumeric';
+throws_ok {$t->stack(undef) } qr/alphanumeric/, 'StackName not be undef';
 throws_ok {$t->stack('') } qr/alphanumeric/, 'StackName must have length';
 
 lives_ok { $t->stack_at('@') } q{StackAt as "@"};
@@ -46,6 +48,7 @@ dies_ok { $t->stack_default('X') } 'Invalid StackDefault';
 $t->property('MyProperty');
 is($t->property, 'myproperty', 'Coerced PropertyName from string');
 throws_ok {$t->property('foo bar!') } qr/alphanumeric/, 'PropertyName must be alphanumeric';
+throws_ok {$t->property(undef) } qr/alphanumeric/, 'PropertyName must not be undef';
 throws_ok {$t->property('') } qr/alphanumeric/, 'PropertyName must have length';
 
 $t->version(5.1);
