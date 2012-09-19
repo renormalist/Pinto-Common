@@ -122,6 +122,20 @@ __END__
   # Unpin a distribution
   pinto -r /repos/dir unpin AUTHOR/Some-Dist-1.0.tar.gz
 
+=head1 VERSIONING
+
+  # View commit messages for the default stack
+  pinto -r /repos/dir log
+
+  # View commit message from revision 12 of a stack called "dev"
+  pinto -r /repos/dir log dev@12
+
+  # Rollback the default stack to the previous revision
+  pinto -r /repos/dir revert
+
+  # Rollback the "qa" stack to revision 29
+  pinto -r /repos/dir revert qa@29
+
 =head1 MISCELLANY
 
   # Report missing distribution archives
@@ -129,9 +143,6 @@ __END__
 
   # Report repos statistics
   pinto -r /repos/dir stats
-
-  # Show the index file for a called "dev"
-  pinto -r /repos/dir index --stack dev
 
 =head1 GETTING MORE HELP
 
