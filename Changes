@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+     Revised documentation.
+
 0.047     2012-09-17 13:07:15 America/Los_Angeles
 
      Prevent 'uninitialized' warnings in type constraints.
