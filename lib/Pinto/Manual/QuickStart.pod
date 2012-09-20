@@ -15,7 +15,11 @@ __END__
 
 =head1 CREATING THE REPOSITORY
 
+  # A new repository, default stack will be named "init"
   pinto -r /repos/dir init
+
+  # A new repository, default stack will be named "dev"
+  pinto -r /repos/dir init --stack dev
 
 =head1 BROWSING THE REPOSITORY
 
