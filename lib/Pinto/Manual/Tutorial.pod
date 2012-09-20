@@ -13,7 +13,7 @@ __END__
 
 =pod
 
-=for stopwords cpanm BackPAN
+=for stopwords cpan cpanm BackPAN MyApp URI
 
 =head1 INTRODUCTION
 
@@ -408,8 +408,8 @@ situations, you can use the L<revert|App::Pinto::Command::revert>
 command to restore the stack a prior state.
 
 Suppose that we've discovered that version 1.62 of URI has broken
-MyApp.  If the problem lies within MyApp and we can fix it quickly,
-then we could just put a new release of MyApp into the repository.
+MyApp.  If the problem lies within our code and we can fix it
+quickly, then we could just put a new release into the repository.
 But if the problem lies within URI, or one of its dependencies, or we
 just don't know where the problem is, then we can roll the stack back
 to the previous state
