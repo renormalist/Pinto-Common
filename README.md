@@ -4,7 +4,7 @@ Pinto::Common - Common libraries for the [Pinto](http://search.cpan.org/perldoc?
 
 # VERSION
 
-version 0.047
+version 0.048
 
 # DESCRIPTION
 
