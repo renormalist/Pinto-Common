@@ -2,7 +2,7 @@ package TestClass;
 
 use Moose;
 use Pinto::Types qw( File Dir Uri Io Author Vers PropertyName
-                     StackName StackAt StackDefault PkgSpec DistSpec Specs );
+                     StackName StackAll StackDefault PkgSpec DistSpec Specs );
 
 #-----------------------------------------------------------------------------
 
@@ -42,9 +42,9 @@ has stack => (
     coerce => 1,
 );
 
-has stack_at => (
+has stack_all => (
     is  => 'rw',
-    isa => StackAt,
+    isa => StackAll,
 );
 
 has stack_default => (

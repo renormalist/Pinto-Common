@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 use MooseX::Types -declare => [ qw( Author Uri Dir File Files Io Vers StackName
-                                    StackAt StackDefault PropertyName PkgSpec
+                                    StackAll StackDefault PropertyName PkgSpec
                                     DistSpec Spec Specs) ];
 
 use MooseX::Types::Moose qw( Str Num ScalarRef ArrayRef Undef
@@ -52,10 +52,10 @@ coerce StackName,
 
 #-----------------------------------------------------------------------------
 
-subtype StackAt,
+subtype StackAll,
   as      Str,
-  where   { $_ eq '@' },
-  message { q{The stack name must be '@'} };
+  where   { $_ eq '%' },
+  message { q{The stack name must be '%'} };
 
 #-----------------------------------------------------------------------------
 

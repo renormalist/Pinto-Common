@@ -37,9 +37,10 @@ throws_ok {$t->stack('foo bar!') } qr/alphanumeric/, 'StackName must be alphanum
 throws_ok {$t->stack(undef) } qr/alphanumeric/, 'StackName not be undef';
 throws_ok {$t->stack('') } qr/alphanumeric/, 'StackName must have length';
 
-lives_ok { $t->stack_at('@') } q{StackAt as "@"};
-dies_ok { $t->stack_at('') } 'Invalid StackAt';
-dies_ok { $t->stack_at('X') } 'Invalid StackAt';
+lives_ok { $t->stack_all('%') } q{StackAll as "%"};
+dies_ok { $t->stack_all('') } 'Invalid StackAll';
+dies_ok { $t->stack_all(undef) } 'Invalid StackAll';
+dies_ok { $t->stack_all('X') } 'Invalid StackAll';
 
 lives_ok { $t->stack_default(undef) } q{StackDefault as undef};
 dies_ok { $t->stack_default('') } 'Invalid StackDefault';
