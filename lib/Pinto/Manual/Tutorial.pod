@@ -120,7 +120,7 @@ L<add|App::Pinto::Command::add> command:
 When you list the repository contents now, it will include the
 C<My::App> package and show you as the author of the distribution:
 
-  rl  My::App                         1.0  USERNAME/My-App-1.0.tar.gz
+  rl  My::App                         1.0  JEFF/My-App-1.0.tar.gz
   rf  URI                            1.60  GAAS/URI-1.60.tar.gz
   rf  URI::Escape                    3.31  GAAS/URI-1.60.tar.gz
   rf  URI::Heuristic                 4.20  GAAS/URI-1.60.tar.gz
@@ -157,7 +157,7 @@ that you want:
 If you look at the listing again, this time you'll see the newer
 version of URI (and possibly other packages as well):
 
-  rl  My::App                         1.0  USERNAME/My-App-1.0.tar.gz
+  rl  My::App                         1.0  JEFF/My-App-1.0.tar.gz
   rf  URI                            1.62  GAAS/URI-1.62.tar.gz
   rf  URI::Escape                    3.38  GAAS/URI-1.62.tar.gz
   rf  URI::Heuristic                 4.20  GAAS/URI-1.62.tar.gz
@@ -228,7 +228,7 @@ command with the C<--stack> option:
 
 The listing should be identical to the C<init> stack:
 
-  rl  My::App                         1.0  USERNAME/My-App-1.0.tar.gz
+  rl  My::App                         1.0  JEFF/My-App-1.0.tar.gz
   rf  URI                            1.60  GAAS/URI-1.60.tar.gz
   ...
 
@@ -243,11 +243,11 @@ pulled onto the C<uri_upgrade> stack:
 
 Now look at the repository contents again.  You'll use the
 L<list|App::Pinto::Command::list> command, but this time you'll use
-the special stack name "@" to indicate that we want to look B<across>
-all the stacks.  In addition, you'll use the C<--packages> option to
-limit the listing to just the packages that you are interested in:
+the special stack name "%" to indicate that we want to look at all the
+stacks.  In addition, you'll use the C<--packages> option to limit the
+listing to just the packages that you are interested in:
 
-  $> pinto -r ~/repos/ list --stack @  --packages URI
+  $> pinto -r ~/repos/ list --stack %  --packages URI
 
 You'll see that the C<init> stack still contains version 1.60 of URI,
 but the C<uri_upgarde> stack now contains version 1.62:
@@ -296,7 +296,7 @@ If you look at the listing for the C<init> stack again, you'll see
 something like this:
 
   ...
-  rl  My::App                         1.0  USERNAME/My-App-1.0.tar.gz
+  rl  My::App                         1.0  JEFF/My-App-1.0.tar.gz
   rf+ URI                            1.60  GAAS/URI-1.60.tar.gz
   rf+ URI::Escape                    3.31  GAAS/URI-1.60.tar.gz
   ...
@@ -397,6 +397,61 @@ latest version of URI back to it.
 
   $> pinto -r ~/repos unpin URI
   $> pinto -r ~/repos pull URI~1.62
+
+=head2 Rolling Back Changes
+
+In a perfect world, your unit tests immediately tell you when an
+upgraded dependency has broken your application.  But the world is not
+perfect, so you may not learn that your application is broken until
+long after you upgraded the stack and released the app.  In those
+situations, you can use the L<revert|App::Pinto::Command::revert>
+command to restore the stack a prior state.
+
+Suppose that we've discovered that version 1.62 of URI has broken
+MyApp.  If the problem lies within MyApp and we can fix it quickly,
+then we could just put a new release of MyApp into the repository.
+But if the problem lies within URI, or one of its dependencies, or we
+just don't know where the problem is, then we can roll the stack back
+to the previous state
+
+  $> pinto -r ~/repos revert
+
+If we look at the listing now, we see that the stack has gone back to
+the locally patched version of URI that we added just before upgrading
+to version 1.62 of URI.
+
+  ...
+  rl  My::App                         1.0  JEFF/My-App-1.0.tar.gz
+  rf  URI                            1.60  JEFF/URI-1.60_PATCHED.tar.gz
+  rf  URI::Escape                    3.31  JEFF/URI-1.60_PATCHED.tar.gz
+  ...
+
+Each pinto command that changes the state of a stack (e.g. C<add>,
+C<pull>, C<merge>, C<new>, C<copy>, C<revert>) constitutes one
+revision on that stack.  You can then restore the stack to the state
+at any prior revision.  Use the L<log|App::Pinto::Command::log>
+command to review the changes that have occurred on a stack and
+identify the revision that you want to revert to.
+
+  $> pinto -r ~/repos log -d
+
+That should display something like this:
+
+  ---------------------------------------------------------------------------
+  init@4 | jeff | Thu Sep 20 11:12:18 GMT 2012
+
+  URI-1.60 is broken, so replacing it with our patched version
+
+  D GAAS/URI-1.60.tar.gz/URI~1.60
+  A JEFF/URI-1.60_PATCHED.tar.gz/URI~1.60
+  D GAAS/URI-1.60.tar.gz/URI::Escape~1.60
+  A JEFF/URI-1.60_PATCHED.tar.gz/URI::Escape~1.60
+  ...
+
+The header for each log record shows the stack name, revision number,
+the user who performed the revision, and the message that accompanied
+it.  Below the header, you can see exactly which packages were deleted
+(D) and added (A) to the stack.
 
 =head1 WORKING WITH LEGACY CODE
 
