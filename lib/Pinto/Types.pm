@@ -20,6 +20,7 @@ use IO::Handle;
 use IO::File;
 
 use Pinto::SpecFactory;
+use Pinto::Constants qw(:all);
 
 use version;
 use namespace::autoclean;
@@ -54,8 +55,8 @@ coerce StackName,
 
 subtype StackAll,
   as      Str,
-  where   { $_ eq '%' },
-  message { q{The stack name must be '%'} };
+  where   { $_ eq $PINTO_STACK_NAME_ALL },
+  message { qq{The stack name must be '$PINTO_STACK_NAME_ALL'} };
 
 #-----------------------------------------------------------------------------
 
