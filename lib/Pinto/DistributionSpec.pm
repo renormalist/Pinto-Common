@@ -19,7 +19,6 @@ use overload ('""' => 'to_string');
 has author => (
     is       => 'ro',
     isa      => Author,
-    coerce   => 1,
     required => 1,
 );
 

@@ -33,13 +33,11 @@ has io  => (
 has author => (
     is  => 'rw',
     isa => Author,
-    coerce => 1,
 );
 
 has stack => (
     is  => 'rw',
     isa => StackName,
-    coerce => 1,
 );
 
 has stack_all => (
@@ -55,7 +53,6 @@ has stack_default => (
 has property => (
     is  => 'rw',
     isa => PropertyName,
-    coerce => 1,
 );
 
 has version => (
