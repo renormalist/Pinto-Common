@@ -23,6 +23,15 @@ has author => (
 );
 
 
+has author_canonical => (
+    is       => 'ro',
+    isa      => Str,
+    init_arg => undef,
+    default  => sub { uc $_[0]->author },
+    lazy     => 1,
+);
+
+
 has archive => (
     is       => 'ro',
     isa      => Str,
@@ -72,7 +81,7 @@ suitable for constructing a URI.
 sub path {
     my ($self) = @_;
 
-    my $author   = $self->author;
+    my $author   = $self->author_canonical;
     my @subdirs  = @{ $self->subdirs };
     my $archive  = $self->archive;
 
