@@ -31,20 +31,16 @@ use namespace::autoclean;
 
 #-----------------------------------------------------------------------------
 
-my $ALPHANUMERIC_REGEX = qr{^ [a-zA-Z0-9-_]+ $}x;
-
-#-----------------------------------------------------------------------------
-
 subtype Author,
   as Str,
-  where   { $_ =~ $ALPHANUMERIC_REGEX },
+  where   { $_ =~ $PINTO_AUTHOR_REGEX },
   message { 'The author id (' . (defined() ? $_ : 'undef') . ') must be alphanumeric' };
 
 #-----------------------------------------------------------------------------
 
 subtype StackName,
   as      Str,
-  where   { $_ =~ $ALPHANUMERIC_REGEX },
+  where   { $_ =~ $PINTO_STACK_NAME_REGEX },
   message { 'The stack name (' . (defined() ? $_ : 'undef') . ') must be alphanumeric' };
 
 #-----------------------------------------------------------------------------
@@ -63,7 +59,7 @@ subtype StackDefault,
 
 subtype PropertyName,
   as      Str,
-  where   { $_ =~ $ALPHANUMERIC_REGEX },
+  where   { $_ =~ $PINTO_PROPERTY_NAME_REGEX },
   message { 'The property name (' . (defined() ? $_ : 'undef') . 'must be alphanumeric' };
 
 #-----------------------------------------------------------------------------
