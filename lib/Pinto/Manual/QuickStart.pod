@@ -145,7 +145,7 @@ __END__
   # Report missing distribution archives
   pinto -r /repos/dir verify
 
-  # Report repos statistics
+  # Report repo statistics
   pinto -r /repos/dir stats
 
 =head1 GETTING MORE HELP
