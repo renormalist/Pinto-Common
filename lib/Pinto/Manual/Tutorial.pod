@@ -220,7 +220,7 @@ L<copy|App::Pinto::Command::copy> command:
   $> pinto -r ~/repo copy init uri_upgrade
 
 This creates a new stack called C<uri_upgrade> (stack names must be
-alphanumeric and are forced to lowercase).  If you want to see the
+alphanumeric and are case insensitive).  If you want to see the
 contents of that stack, just use the L<list|App::Pinto::Command::list>
 command with the C<--stack> option:
 
