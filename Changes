@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+     Revised documentation.
+
 0.049     2012-10-20 00:02:17 America/Los_Angeles
 
      Author, StackName, and PropertyName types are no longer
