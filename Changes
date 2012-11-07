@@ -1,5 +1,12 @@
 {{$NEXT}}
 
+     This distribution now contains Pinto::Util, which
+     used to be part of the Pinto core.  To make PAUSE
+     happy, it needs to have a higher version number than
+     the last release when it was in the Pinto core. Hence
+     the big jump in the version number since the last
+     release of this distribution.
+
 0.050     2012-10-22 12:34:27 America/Los_Angeles
 
      Revised documentation.
