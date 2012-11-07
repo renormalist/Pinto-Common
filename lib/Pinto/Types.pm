@@ -7,7 +7,7 @@ use warnings;
 
 use MooseX::Types -declare => [ qw( Author Uri Dir File Files Io Vers StackName
                                     StackAll StackDefault PropertyName PkgSpec
-                                    DistSpec Spec Specs) ];
+                                    StackObject DistSpec Spec Specs) ];
 
 use MooseX::Types::Moose qw( Str Num ScalarRef ArrayRef Undef
                              HashRef FileHandle Object Int );
@@ -54,6 +54,10 @@ subtype StackAll,
 
 subtype StackDefault,
   as      Undef;
+
+#-----------------------------------------------------------------------------
+
+class_type StackObject, {class => 'Pinto::Schema::Result::Stack'};
 
 #-----------------------------------------------------------------------------
 
