@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+     Added StackObject type.
+
 0.062     2012-11-07 01:21:34 America/Los_Angeles
 
      This distribution now contains Pinto::Util, which
