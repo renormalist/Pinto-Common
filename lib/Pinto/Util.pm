@@ -66,6 +66,13 @@ sub author_dir {                                  ## no critic (ArgUnpacking)
 
 #-------------------------------------------------------------------------------
 
+=func itis( $var, $class )
+
+Asserts whether var is a blessed reference and is an instance of the
+C<$class>.
+
+=cut
+
 sub itis {
     my ($var, $class) = @_;
 
@@ -73,6 +80,14 @@ sub itis {
 }
 
 #-------------------------------------------------------------------------------
+
+=func parse_dist_path( $path )
+
+Parses a path like one would see in the URL to a distribution in a
+CPAN repository and returns the author and file name of the
+distribution.  Other subdirectories in the path are ignored.
+
+=cut
 
 sub parse_dist_path {
     my ($path) = @_;
@@ -96,6 +111,14 @@ sub parse_dist_path {
 
 #-------------------------------------------------------------------------------
 
+=func isa_perl( $path_or_url )
+
+Return true if C<$path_or_url> appears to point to a release of perl
+itself.  This is based on some file naming patterns that I've seen in
+the wild.  It may not be completely accurate.
+
+=cut
+
 sub isa_perl {
     my ($path_or_url) = @_;
 
@@ -103,6 +126,13 @@ sub isa_perl {
 }
 
 #-------------------------------------------------------------------------------
+
+=func is_vcs_file( $path );
+
+Returns true if C<$path> appears to point to a file that is an
+internal part of a VCS system.
+
+=cut
 
 Readonly my %VCS_FILES => (map {$_ => 1} qw(.svn .git .gitignore CVS));
 
@@ -116,6 +146,14 @@ sub is_vcs_file {
 
 #-------------------------------------------------------------------------------
 
+=func mtime( $file )
+
+Returns the last modification time (in epoch seconds) for the C<file>.
+The argument is required and the file must exist or an exception will
+be thrown.
+
+=cut
+
 sub mtime {
     my ($file) = @_;
 
@@ -126,6 +164,14 @@ sub mtime {
 }
 
 #-------------------------------------------------------------------------------
+
+=func md5( $file )
+
+Returns the C<MD-5> digest (as a hex string) for the C<$file>.  The
+argument is required and the file must exist on an exception will be
+thrown.
+
+=cut
 
 sub md5 {
     my ($file) = @_;
@@ -140,6 +186,14 @@ sub md5 {
 }
 
 #-------------------------------------------------------------------------------
+
+=func sha256( $file )
+
+Returns the C<SHA-256> digest (as a hex string) for the C<$file>.  The
+argument is required and the file must exist on an exception will be
+thrown.
+
+=cut
 
 sub sha256 {
     my ($file) = @_;
@@ -211,25 +265,56 @@ sub ls_time_format {
 
 #-------------------------------------------------------------------------------
 
+=func current_time()
+
+Returns the current time (in epoch seconds) unless the current time has been
+overridden by C<$Pinto::Globals::current_time>.
+
+=cut
+
 sub current_time {
 
-    return $Pinto::Globals::current_time if defined $Pinto::Globals::current_time;
+    ## no critic qw(PackageVars)
+    return $Pinto::Globals::current_time
+      if defined $Pinto::Globals::current_time;
+
     return time;
 }
 
 #-------------------------------------------------------------------------------
 
+=func current_user()
+
+Returns the id of the current user unless it has been overridden by
+C<$Pinto::Globals::current_user>.
+
+=cut
+
 sub current_user {
 
-    return $Pinto::Globals::current_user if defined $Pinto::Globals::current_user;
-    return $ENV{USER} || $ENV{LOGIN} || $ENV{LOGNAME};
+    ## no critic qw(PackageVars)
+    return $Pinto::Globals::current_user
+      if defined $Pinto::Globals::current_user;
+
+    return $ENV{USER} || $ENV{LOGIN} || $ENV{USERNAME} || $ENV{LOGNAME};
 }
 
 #-------------------------------------------------------------------------------
 
+=func is_interactive()
+
+Returns true if the process is connected to an interactive terminal
+(i.e.  a keyboard & screen) unless it has been overridden by
+C<$Pinto::Globals::is_interactive>.
+
+=cut
+
 sub is_interactive {
 
-    return $Pinto::Globals::is_interactive if defined $Pinto::Globals::is_interactive;
+    ## no critic qw(PackageVars)
+    return $Pinto::Globals::is_interactive
+      if defined $Pinto::Globals::is_interactive;
+
     return IO::Interactive::is_interactive;
 }
 
@@ -238,9 +323,11 @@ sub is_interactive {
 
 __END__
 
+
 =head1 DESCRIPTION
 
 This is a private module for internal use only.  There is nothing for
-you to see here (yet).
+you to see here (yet).  All API documentation is purely for my own
+reference.
 
 =cut
