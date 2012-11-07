@@ -43,7 +43,7 @@ Readonly our @EXPORT_OK => qw(
     sha256
 );
 
-Readonly our %EXPORT_TAGS = ( all => \@EXPORT_OK );
+Readonly our %EXPORT_TAGS => ( all => \@EXPORT_OK );
 
 #-------------------------------------------------------------------------------
 
