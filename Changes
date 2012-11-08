@@ -2,6 +2,8 @@
 
      Added StackObject type.
 
+     Fixed typo that resulted in syntax error (thanks Schwern).
+
 0.062     2012-11-07 01:21:34 America/Los_Angeles
 
      This distribution now contains Pinto::Util, which
