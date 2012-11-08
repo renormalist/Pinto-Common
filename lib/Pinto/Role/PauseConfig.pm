@@ -71,6 +71,7 @@ sub _build_pausecfg {
     while (<$fh>) {
         next if /^ \s* (?: [#].*)? $/x;
         my ($k, $v) = /^ \s* (\w+) \s+ (.+?) \s* $/x;
+        next unless $k;
         $cfg->{$k} = $v;
     }
 
