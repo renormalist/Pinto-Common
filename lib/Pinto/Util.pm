@@ -41,6 +41,8 @@ Readonly our @EXPORT_OK => qw(
     md5
     mtime
     sha256
+    interpolate
+    trim
 );
 
 Readonly our %EXPORT_TAGS => ( all => \@EXPORT_OK );
