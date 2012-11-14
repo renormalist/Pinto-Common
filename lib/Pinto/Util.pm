@@ -243,28 +243,6 @@ sub validate_stack_name {
 
 #-------------------------------------------------------------------------------
 
-=func ls_time_format( $seconds_since_epoch )
-
-Formats a time value into a string that is similar to what you see in
-the output from the C<ls -l> command.  If the given time is less than
-1 year ago from now, you'll see the month, day, and time.  If the time
-is more than 1 year ago, you'll see the month, day, and year.
-
-=cut
-
-
-sub ls_time_format {
-    my ($time) = @_;
-    my $now = time;
-    my $diff = $now - $time;
-    my $one_year = 60 * 60 * 24 * 365;  # seconds per year
-
-    my $format = $diff > $one_year ? '%b %e  %Y' : '%b %e %H:%M';
-    return DateTime->from_epoch( time_zone => 'local', epoch => $time )->strftime($format);
-}
-
-#-------------------------------------------------------------------------------
-
 =func current_time()
 
 Returns the current time (in epoch seconds) unless the current time has been
@@ -316,6 +294,39 @@ sub is_interactive {
       if defined $Pinto::Globals::is_interactive;
 
     return IO::Interactive::is_interactive;
+}
+
+#-------------------------------------------------------------------------------
+
+=func interpolate($string)
+
+Performs interpolation on a literal string.  The string should not
+include anything that looks like a variable.  Only metacharacters
+(like \n) will be interpolated correctly.
+
+=cut
+
+sub interpolate {
+    my $string = shift;
+
+    return eval qq{"$string"};
+}
+
+#-------------------------------------------------------------------------------
+
+=func trim($string)
+
+Returns the string with all leading and trailing whitespace removed.
+
+=cut
+
+sub trim {
+    my $string = shift;
+
+    $string =~ s/^ \s+  //;
+    $string =~ s/  \s+ $//;
+
+    return $string;
 }
 
 #-------------------------------------------------------------------------------
