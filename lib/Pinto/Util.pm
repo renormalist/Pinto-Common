@@ -311,7 +311,7 @@ include anything that looks like a variable.  Only metacharacters
 sub interpolate {
     my $string = shift;
 
-    return eval qq{"$string"};
+    return eval qq{"$string"};  ## no critic qw(Eval)
 }
 
 #-------------------------------------------------------------------------------
@@ -325,8 +325,8 @@ Returns the string with all leading and trailing whitespace removed.
 sub trim {
     my $string = shift;
 
-    $string =~ s/^ \s+  //;
-    $string =~ s/  \s+ $//;
+    $string =~ s/^ \s+  //x;
+    $string =~ s/  \s+ $//x;
 
     return $string;
 }
