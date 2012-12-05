@@ -42,7 +42,7 @@ more information on that.
 The first step in using Pinto is to create a repository, using the
 L<init|App::Pinto::Command::init> command like this:
 
-  $> pinto -r ~/repo init
+  $> pinto -r ~/repo init dev
 
 This will create a new repository in the F<~/repos> directory.  If
 that directory does not exist, it will be created for you.  If it
@@ -52,6 +52,9 @@ The C<-r> (or C<--root>) option specifies where the repository is.
 This argument is required for every L<pinto> command.  But if you get
 tired of typing it, you can set the C<PINTO_REPOSITORY_ROOT>
 environment variable to point to your repository instead.
+
+The C<dev> argument is the name of the initial stack in the
+repository.  We'll discuss stacks in more detail later on.
 
 =head2 Inspecting the repository
 
@@ -195,14 +198,14 @@ default stack.  For most operations, the name of the stack is an
 optional parameter.  So if you do not specify a stack explicitly, then
 the operation is applied to whichever stack is marked as the default.
 
-In any repository, there is exactly one default stack.  When you
-create a repository, it comes with a stack called C<init> and this
-stack is marked as the default.  You can also change the default
-stack, but we won't go into that here.  See the
-L<edit|App::Pinto::Command::edit> command to learn more about that.
+In any repository, there never more than one default stack.  When we
+created this repository, we specified the initial stack to be C<dev>
+and this stack was marked as the default.  You can also change the
+default stack, but we won't go into that here.  See the
+L<default|App::Pinto::Command::default> command to learn more about that.
 
-Just remember that C<init> is the name of the built-in stack that
-comes with a new Pinto repository.
+Just remember that C<dev> is the name of the stack that we created
+when the repository was first set up.
 
 =head2 Creating a stack
 
@@ -212,12 +215,12 @@ want to try upgrading, but this time you're going to do it on a
 separate stack.
 
 Thus far, everything you've added or pulled into the repository has
-gone onto the C<init> stack.  You could create an entirely new stack,
-but the C<init> stack already has the prerequisites for My-App, so
+gone onto the C<dev> stack.  You could create an entirely new stack,
+but the C<dev> stack already has the prerequisites for My-App, so
 we're just going to make a clone using the
 L<copy|App::Pinto::Command::copy> command:
 
-  $> pinto -r ~/repo copy init uri_upgrade
+  $> pinto -r ~/repo copy dev uri_upgrade
 
 This creates a new stack called C<uri_upgrade> (stack names must be
 alphanumeric and are case insensitive).  If you want to see the
@@ -226,7 +229,7 @@ command with the C<--stack> option:
 
   $> pinto -r ~/repo list --stack uri_upgrade
 
-The listing should be identical to the C<init> stack:
+The listing should be identical to the C<dev> stack:
 
   rl  My::App                         1.0  JEFF/My-App-1.0.tar.gz
   rf  URI                            1.60  GAAS/URI-1.60.tar.gz
@@ -249,10 +252,10 @@ listing to just the packages that you are interested in:
 
   $> pinto -r ~/repos/ list --stack %  --packages URI
 
-You'll see that the C<init> stack still contains version 1.60 of URI,
+You'll see that the C<dev> stack still contains version 1.60 of URI,
 but the C<uri_upgarde> stack now contains version 1.62:
 
-  init:         rf URI                1.60 GAAS/URI-1.60.tar.gz
+  dev:          rf URI                1.60 GAAS/URI-1.60.tar.gz
   uri_upgrade:  rf URI                1.62 GAAS/URI-1.62.tar.gz
 
 =head2 Installing from a stack
@@ -266,7 +269,7 @@ right stack:
 
 This will build My::App using only the prerequisites that are on the
 C<uri_upgrade> stack.  If the tests pass, then you can confidently
-upgrade URI on the C<init> stack as well.
+upgrade URI on the C<dev> stack as well.
 
 =head1 USING PINS
 
@@ -274,7 +277,7 @@ In the last section, we used a stack to experiment with upgrading a
 dependency.  Fortunately, all the tests passed.  But what if the tests
 didn't pass?  If the problem lies within My-App and you can quickly
 correct it, you might just modify your code, release version 2.0 of
-My-App, and then proceed to upgrade URI on the C<init> stack.
+My-App, and then proceed to upgrade URI on the C<dev> stack.
 
 But if the issue is a bug in URI or it will take a long time to fix
 My-App, then you have a real problem.  You don't want someone else to
@@ -292,7 +295,7 @@ L<pin|App::Pinto::Command::pin> command like this:
 
   $> pinto -r ~/repo pin URI
 
-If you look at the listing for the C<init> stack again, you'll see
+If you look at the listing for the C<dev> stack again, you'll see
 something like this:
 
   ...
@@ -379,7 +382,7 @@ patched version.  Just as before, this can be done by cloning the
 stack with the L<copy|App::Pinto::Command::copy> command.  Let's call
 it the "trial" stack this time:
 
- $> pinto -r ~/repo copy init trial
+ $> pinto -r ~/repo copy dev trial
 
 But before you can upgrade URI on the C<trial> stack, you'll have to
 unpin it there:
@@ -392,7 +395,7 @@ C<My::App> like this:
   $> pinto -r ~/repo pull --stack trial URI~1.62
   $> pinto -r ~/repo install --stack trial My::App
 
-If all goes well, remove the pin from the C<init> stack and pull your
+If all goes well, remove the pin from the C<dev> stack and pull your
 latest version of URI back to it.
 
   $> pinto -r ~/repo unpin URI
@@ -438,7 +441,7 @@ identify the revision that you want to revert to.
 That should display something like this:
 
   ---------------------------------------------------------------------------
-  init@4 | jeff | Thu Sep 20 11:12:18 GMT 2012
+  dev@4 | jeff | Thu Sep 20 11:12:18 GMT 2012
 
   URI-1.60 is broken, so replacing it with our patched version
 
