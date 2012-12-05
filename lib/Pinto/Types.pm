@@ -5,9 +5,10 @@ package Pinto::Types;
 use strict;
 use warnings;
 
-use MooseX::Types -declare => [ qw( Author Uri Dir File Files Io Vers StackName
+use MooseX::Types -declare => [ qw( Author Uri Dir File FileList Io Vers StackName
                                     StackAll StackDefault PropertyName PkgSpec
-                                    StackObject DistSpec Spec Specs) ];
+                                    PkgSpecList StackObject DistSpec DistSpecList
+                                    Spec SpecList) ];
 
 use MooseX::Types::Moose qw( Str Num ScalarRef ArrayRef Undef
                              HashRef FileHandle Object Int );
@@ -104,9 +105,9 @@ coerce File,
 
 #-----------------------------------------------------------------------------
 
-subtype Files, as ArrayRef[File];
+subtype FileList, as ArrayRef[File];
 
-coerce Files,
+coerce FileList,
   from File,          via { [ $_ ] },
   from Str,           via { [ Path::Class::File->new($_) ] },
   from ArrayRef[Str], via { [ map { Path::Class::File->new($_) } @$_ ] };
@@ -130,14 +131,34 @@ coerce DistSpec,
 
 #-----------------------------------------------------------------------------
 
-subtype Specs,
-  as ArrayRef[PkgSpec| DistSpec];    ## no critic qw(ProhibitBitwiseOperators);
+subtype SpecList,
+  as ArrayRef[PkgSpec | DistSpec];    ## no critic qw(ProhibitBitwiseOperators);
 
-coerce Specs,
+coerce SpecList,
   from  PkgSpec,            via { [ $_ ] },
   from  DistSpec,           via { [ $_ ] },
   from  Str,                via { [ Pinto::SpecFactory->make_spec($_) ] },
   from  ArrayRef[Str],      via { [ map { Pinto::SpecFactory->make_spec($_) } @$_ ] };
+
+#-----------------------------------------------------------------------------
+
+subtype DistSpecList,
+  as ArrayRef[DistSpec];    ## no critic qw(ProhibitBitwiseOperators);
+
+coerce DistSpecList,
+  from  DistSpec,           via { [ $_ ] },
+  from  Str,                via { [ Pinto::DistributionSpec->new($_) ] },
+  from  ArrayRef[Str],      via { [ map { Pinto::DistributionSpec->new($_) } @$_ ] };
+
+#-----------------------------------------------------------------------------
+
+subtype PkgSpecList,
+  as ArrayRef[PkgSpec];    ## no critic qw(ProhibitBitwiseOperators);
+
+coerce PkgSpecList,
+  from  DistSpec,           via { [ $_ ] },
+  from  Str,                via { [ Pinto::PackageSpec->new($_) ] },
+  from  ArrayRef[Str],      via { [ map { Pinto::PackageSpec->new($_) } @$_ ] };
 
 #-----------------------------------------------------------------------------
 
