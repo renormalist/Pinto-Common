@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+    Added PkgSpecList and DistSpecList types.
+
+    Specs type has been renamed to SpecList.
+
+    Files type has been renamed to FileList.
+
 0.064     2012-11-14 00:22:32 America/Los_Angeles
 
      Added a couple utility functions I need in Pinto.
