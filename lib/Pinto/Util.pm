@@ -13,6 +13,7 @@ use Digest::MD5;
 use Digest::SHA;
 use Scalar::Util;
 use IO::Interactive;
+use Time::HiRes;
 use DateTime;
 use Readonly;
 
@@ -42,6 +43,7 @@ Readonly our @EXPORT_OK => qw(
     mtime
     sha256
     interpolate
+    decamelize
     trim
 );
 
@@ -213,8 +215,8 @@ sub sha256 {
 
 =func validate_property_name( $prop_name )
 
-Throws an exception if the property name is invalid.  Currently, property names 
-must be alphanumeric plus any underscores or hyphens.
+Throws an exception if the property name is invalid.  Currently,
+property names must be alphanumeric plus any underscores or hyphens.
 
 =cut
 
@@ -230,8 +232,8 @@ sub validate_property_name {
 
 =func validate_stack_name( $stack_name )
 
-Throws an exception if the stack name is invalid.  Currently, stack names must 
-be alphanumeric plus underscores or hyphens.
+Throws an exception if the stack name is invalid.  Currently, stack
+names must be alphanumeric plus underscores or hyphens.
 
 =cut
 
@@ -258,7 +260,7 @@ sub current_time {
     return $Pinto::Globals::current_time
       if defined $Pinto::Globals::current_time;
 
-    return time;
+    return Time::HiRes::time;
 }
 
 #-------------------------------------------------------------------------------
@@ -329,6 +331,25 @@ sub trim {
     $string =~ s/  \s+ $//x;
 
     return $string;
+}
+
+#-------------------------------------------------------------------------------
+
+=func decamelize($string)
+
+Returns the string forced to lower case and words separated by underscores.
+For example "FooBar" becomes "foo_bar".
+
+=cut
+
+sub decamelize {
+    my $string = shift;
+
+    return if not defined $string;
+
+    $string =~ s/([a-z])([A-Z])/$1_$2/g;
+
+    return lc string;
 }
 
 #-------------------------------------------------------------------------------
