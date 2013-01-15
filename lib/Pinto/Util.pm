@@ -18,7 +18,7 @@ use DateTime;
 use Readonly;
 
 use Pinto::Globals;
-use Pinto::Constants qw($PINTO_STACK_NAME_REGEX $PINTO_PROPERTY_NAME_REGEX);
+use Pinto::Constants qw(:all);
 use Pinto::Exception qw(throw);
 
 use namespace::autoclean;
@@ -35,15 +35,16 @@ Readonly our @EXPORT_OK => qw(
     author_dir
     current_time
     current_user
+    decamelize
+    interpolate
     is_interactive
+    is_stack_all
     is_vcs_file
     isa_perl
     itis
     md5
     mtime
     sha256
-    interpolate
-    decamelize
     trim
 );
 
@@ -350,6 +351,21 @@ sub decamelize {
     $string =~ s/([a-z])([A-Z])/$1_$2/g;
 
     return lc $string;
+}
+
+#-------------------------------------------------------------------------------
+
+=func is_stack_all($stack_name)
+
+Returns true if the given C<$stack_name> matches the name of the magical
+C<STACK_ALL> which represents all stacks.
+
+=cut
+
+sub is_stack_all {
+    my $stack_name = shift;
+
+    return defined $stack_name && $stack_name eq $PINTO_STACK_NAME_ALL;
 }
 
 #-------------------------------------------------------------------------------
