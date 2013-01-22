@@ -13,8 +13,6 @@ use Digest::MD5;
 use Digest::SHA;
 use Scalar::Util;
 use IO::Interactive;
-use Time::HiRes;
-use DateTime;
 use Readonly;
 
 use Pinto::Globals;
@@ -43,6 +41,7 @@ Readonly our @EXPORT_OK => qw(
     isa_perl
     itis
     md5
+    mksymlink
     mtime
     sha256
     trim
@@ -261,7 +260,7 @@ sub current_time {
     return $Pinto::Globals::current_time
       if defined $Pinto::Globals::current_time;
 
-    return Time::HiRes::time;
+    return time;
 }
 
 #-------------------------------------------------------------------------------
@@ -351,6 +350,26 @@ sub decamelize {
     $string =~ s/([a-z])([A-Z])/$1_$2/g;
 
     return lc $string;
+}
+
+
+#-------------------------------------------------------------------------------
+
+=func mksymlink($from => $to)
+
+Creates a symlink between the two files.  No checks are performed to see
+if either path is valid or already exists.  Throws an exception if the
+operation fails or is not supported.
+
+=cut
+
+sub mksymlink {
+    my ($from, $to) = @_;
+
+    # TODO: Try to add Win32 support here, somehow.
+    symlink $to, $from or die "symlink to $to from $from failed: $!";
+
+    return 1;
 }
 
 #-------------------------------------------------------------------------------
