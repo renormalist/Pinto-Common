@@ -10,11 +10,11 @@ use Pinto::Util qw(:all);
 
 {
 
-  isnt(current_user, '__ME__', 'Actual user');
-  local $Pinto::Globals::current_user = '__ME__';
-  is(current_user, '__ME__', 'Override user');
+  isnt(current_username, '__ME__', 'Actual user');
+  local $Pinto::Globals::current_username = '__ME__';
+  is(current_username, '__ME__', 'Override user');
 
-  isnt(current_user, -9, 'Actual time');
+  isnt(current_time, -9, 'Actual time');
   local $Pinto::Globals::current_time = -9;
   is(current_time, -9, 'Override time');
 
