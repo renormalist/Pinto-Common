@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Test::More;
+use Path::Class;
 use Pinto::Util qw(:all);
 
 #-----------------------------------------------------------------------------
@@ -26,4 +27,40 @@ use Pinto::Util qw(:all);
 
 #-----------------------------------------------------------------------------
 
+{
+
+  my $author = 'joseph';
+  my $expect = dir( qw(J JO JOSEPH) );
+
+  is(Pinto::Util::author_dir($author), $expect, 'Author dir path for joseph');
+
+}
+
+#-----------------------------------------------------------------------------
+
+{
+
+  my $author = 'JO';
+  my $expect = dir( qw(J JO JO) );
+
+  is(Pinto::Util::author_dir($author), $expect, 'Author dir path for JO');
+
+}
+
+#-----------------------------------------------------------------------------
+
+{
+
+  my $author = 'Mike';
+  my @base = qw(a b);
+  my $expect = dir( qw(a b M MI MIKE) );
+
+
+  is(Pinto::Util::author_dir(@base, $author), $expect, 'Author dir with base');
+
+}
+
+#-----------------------------------------------------------------------------
+
 done_testing;
+
