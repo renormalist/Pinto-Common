@@ -5,7 +5,7 @@ package Pinto::Types;
 use strict;
 use warnings;
 
-use MooseX::Types -declare => [ qw( Author Username Uri Dir File FileList Io Vers
+use MooseX::Types -declare => [ qw( Author Username Uri Dir File FileList Io Version
                                     StackName StackAll StackDefault PropertyName PkgSpec
                                     PkgSpecList StackObject DistSpec DistSpecList
                                     Spec SpecList) ];
@@ -77,13 +77,13 @@ subtype PropertyName,
 
 #-----------------------------------------------------------------------------
 
-class_type Vers, {class => 'version'};
+class_type Version, {class => 'version'};
 
-coerce Vers,
+coerce Version,
   from Str,
   via { version->parse($_) };
 
-coerce Vers,
+coerce Version,
   from Num,
   via { version->parse($_) };
 

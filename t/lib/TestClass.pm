@@ -1,7 +1,7 @@
 package TestClass;
 
 use Moose;
-use Pinto::Types qw( File Dir Uri Io Author Vers PropertyName
+use Pinto::Types qw( File Dir Uri Io Author Version PropertyName
                      StackName StackAll StackDefault
                      PkgSpec PkgSpecList
                      DistSpec DistSpecList
@@ -60,7 +60,7 @@ has property => (
 
 has version => (
     is  => 'rw',
-    isa => Vers,
+    isa => Version,
     coerce => 1,
 );
 

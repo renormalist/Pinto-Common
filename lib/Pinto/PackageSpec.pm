@@ -5,7 +5,7 @@ package Pinto::PackageSpec;
 use Moose;
 
 use MooseX::Types::Moose qw(Str);
-use Pinto::Types qw(Vers);
+use Pinto::Types qw(Version);
 
 use overload ('""' => 'to_string');
 
@@ -24,7 +24,7 @@ has name => (
 
 has version => (
     is      => 'ro',
-    isa     => Vers,
+    isa     => Version,
     coerce  => 1,
     default => sub { version->parse(0) }
 );
