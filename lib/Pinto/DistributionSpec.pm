@@ -5,7 +5,7 @@ package Pinto::DistributionSpec;
 use Moose;
 
 use MooseX::Types::Moose qw(ArrayRef Str);
-use Pinto::Types qw(Author);
+use Pinto::Types qw(AuthorID);
 
 use overload ('""' => 'to_string');
 
@@ -18,7 +18,7 @@ use overload ('""' => 'to_string');
 
 has author => (
     is       => 'ro',
-    isa      => Author,
+    isa      => AuthorID,
     required => 1,
 );
 

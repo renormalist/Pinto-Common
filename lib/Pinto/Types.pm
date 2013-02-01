@@ -5,7 +5,7 @@ package Pinto::Types;
 use strict;
 use warnings;
 
-use MooseX::Types -declare => [ qw( Author Username Uri Dir File FileList Io Version
+use MooseX::Types -declare => [ qw( AuthorID Username Uri Dir File FileList Io Version
                                     StackName StackAll StackDefault PropertyName PkgSpec
                                     PkgSpecList StackObject DistSpec DistSpecList
                                     Spec SpecList) ];
@@ -33,7 +33,7 @@ use namespace::autoclean;
 
 #-----------------------------------------------------------------------------
 
-subtype Author,
+subtype AuthorID,
   as Str,
   where   { $_ =~ $PINTO_AUTHOR_REGEX },
   message { 'The author id (' . (defined() ? $_ : 'undef') . ') must be alphanumeric' };
