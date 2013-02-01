@@ -12,9 +12,9 @@ use warnings;
 #------------------------------------------------------------------------------
 
 ## no critic qw(PackageVars);
-our $current_time    = undef;
-our $current_user    = undef;
-our $is_interactive  = undef;
+our $current_time     = undef;
+our $current_username = undef;
+our $is_interactive   = undef;
 
 #------------------------------------------------------------------------------
 1;

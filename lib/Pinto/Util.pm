@@ -1,6 +1,6 @@
-package Pinto::Util;
-
 # ABSTRACT: Static utility functions for Pinto
+
+package Pinto::Util;
 
 use strict;
 use warnings;
@@ -32,7 +32,7 @@ use base qw(Exporter);
 Readonly our @EXPORT_OK => qw(
     author_dir
     current_time
-    current_user
+    current_username
     decamelize
     interpolate
     is_interactive
@@ -43,6 +43,7 @@ Readonly our @EXPORT_OK => qw(
     md5
     mksymlink
     mtime
+    parse_dist_path
     sha256
     trim
 );
@@ -87,30 +88,30 @@ sub itis {
 
 =func parse_dist_path( $path )
 
-Parses a path like one would see in the URL to a distribution in a
-CPAN repository and returns the author and file name of the
-distribution.  Other subdirectories in the path are ignored.
+Parses a path like the ones you would see in a full URL to a
+distribution in a CPAN repository, or the URL fragment you would see
+in a CPAN index.  Returns the author and file name of the
+distribution.  Subdirectoires between the author name and the file
+name are discarded.
 
 =cut
 
 sub parse_dist_path {
     my ($path) = @_;
 
-    # /yadda/authors/id/A/AU/AUTHOR/subdir1/subdir2/Foo-1.0.tar.gz
+    # eg: /yadda/authors/id/A/AU/AUTHOR/subdir1/subdir2/Foo-1.0.tar.gz
+    # or: A/AU/AUTHOR/subdir/Foo-1.0.tar.gz
 
-    if ( $path =~ s{^ (.*) /authors/id/(.*) $}{$2}mx ) {
+    if ( $path =~ s{^ (?:.*/authors/id/)? (.*) $}{$1}mx ) {
 
-        # $path = 'A/AU/AUTHOR/subdir/Foo-1.2.tar.gz'
+        # $path = 'A/AU/AUTHOR/subdir/Foo-1.0.tar.gz'
         my @path_parts = split m{ / }mx, $path;
         my $author  = $path_parts[2];  # AUTHOR
         my $archive = $path_parts[-1]; # Foo-1.0.tar.gz
         return ($author, $archive);
     }
-    else {
 
-        confess 'Unable to parse url: $url';
-    }
-
+    confess "Unable to parse path: $path";
 }
 
 #-------------------------------------------------------------------------------
@@ -265,20 +266,24 @@ sub current_time {
 
 #-------------------------------------------------------------------------------
 
-=func current_user()
+=func current_username()
 
 Returns the id of the current user unless it has been overridden by
-C<$Pinto::Globals::current_user>.
+C<$Pinto::Globals::current_username>.
 
 =cut
 
-sub current_user {
+sub current_username {
 
     ## no critic qw(PackageVars)
-    return $Pinto::Globals::current_user
-      if defined $Pinto::Globals::current_user;
+    return $Pinto::Globals::current_username
+      if defined $Pinto::Globals::current_username;
 
-    return $ENV{USER} || $ENV{LOGIN} || $ENV{USERNAME} || $ENV{LOGNAME};
+    my $username =  $ENV{PINTO_USERNAME} || $ENV{USER} || $ENV{LOGIN} || $ENV{USERNAME} || $ENV{LOGNAME};
+
+    die "Unable to determine your username.  Set PINTO_USERNAME." if not $username;
+
+    return $username
 }
 
 #-------------------------------------------------------------------------------

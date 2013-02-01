@@ -5,8 +5,8 @@ package Pinto::Types;
 use strict;
 use warnings;
 
-use MooseX::Types -declare => [ qw( Author Uri Dir File FileList Io Vers StackName
-                                    StackAll StackDefault PropertyName PkgSpec
+use MooseX::Types -declare => [ qw( Author Username Uri Dir File FileList Io Vers
+                                    StackName StackAll StackDefault PropertyName PkgSpec
                                     PkgSpecList StackObject DistSpec DistSpecList
                                     Spec SpecList) ];
 
@@ -19,6 +19,7 @@ use Path::Class::File;
 use IO::String;
 use IO::Handle;
 use IO::File;
+
 
 use Pinto::SpecFactory;
 use Pinto::Constants qw(:all);
@@ -36,6 +37,13 @@ subtype Author,
   as Str,
   where   { $_ =~ $PINTO_AUTHOR_REGEX },
   message { 'The author id (' . (defined() ? $_ : 'undef') . ') must be alphanumeric' };
+
+#-----------------------------------------------------------------------------
+
+subtype Username,
+  as Str,
+  where   { $_ =~ $PINTO_USERNAME_REGEX },
+  message { 'The username (' . (defined() ? $_ : 'undef') . ') must be alphanumeric' };
 
 #-----------------------------------------------------------------------------
 
