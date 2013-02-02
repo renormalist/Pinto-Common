@@ -5,7 +5,7 @@ use Pinto::Types qw( File Dir Uri Io AuthorID Version PropertyName
                      StackName StackAll StackDefault
                      PkgSpec PkgSpecList
                      DistSpec DistSpecList
-                     SpecList );
+                     SpecList CommitID );
 
 #-----------------------------------------------------------------------------
 
@@ -91,6 +91,12 @@ has dists => (
 has targets => (
     is     => 'rw',
     isa    => SpecList,
+    coerce => 1,
+);
+
+has commit => (
+    is     => 'rw',
+    isa    => CommitID,
     coerce => 1,
 );
 

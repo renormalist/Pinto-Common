@@ -39,6 +39,7 @@ Readonly our @EXPORT_OK => qw(
     $PINTO_USERNAME_REGEX
     $PINTO_STACK_NAME_REGEX
     $PINTO_PROPERTY_NAME_REGEX
+    $PINTO_COMMIT_ID_REGEX
 );
 
 Readonly our %EXPORT_TAGS => ( all => \@EXPORT_OK );
@@ -95,12 +96,14 @@ Readonly our $PINTO_STACK_NAME_ALL  => '%';
 
 #------------------------------------------------------------------------------
 
-Readonly my $PINTO_ALPHANUMERIC_REGEX   => qr{^ [a-zA-Z0-9-_]+ $}x;
+Readonly my $PINTO_ALPHANUMERIC_REGEX  => qr{^ [a-zA-Z0-9-_]+ $}x;
+Readonly my $PINTO_HEXADECIMAL_REGEX   => qr{^ [a-fA-F0-9]+ $}x;
 
 Readonly our $PINTO_AUTHOR_REGEX        => $PINTO_ALPHANUMERIC_REGEX;
 Readonly our $PINTO_USERNAME_REGEX      => $PINTO_ALPHANUMERIC_REGEX;
 Readonly our $PINTO_STACK_NAME_REGEX    => $PINTO_ALPHANUMERIC_REGEX;
 Readonly our $PINTO_PROPERTY_NAME_REGEX => $PINTO_ALPHANUMERIC_REGEX;
+Readonly our $PINTO_COMMIT_ID_REGEX     => $PINTO_HEXADECIMAL_REGEX;
 
 #------------------------------------------------------------------------------
 1;

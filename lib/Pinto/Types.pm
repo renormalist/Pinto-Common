@@ -1,6 +1,6 @@
-package Pinto::Types;
-
 # ABSTRACT: Moose types used within Pinto
+
+package Pinto::Types;
 
 use strict;
 use warnings;
@@ -8,7 +8,7 @@ use warnings;
 use MooseX::Types -declare => [ qw( AuthorID Username Uri Dir File FileList Io Version
                                     StackName StackAll StackDefault PropertyName PkgSpec
                                     PkgSpecList StackObject DistSpec DistSpecList
-                                    Spec SpecList) ];
+                                    Spec SpecList CommitID) ];
 
 use MooseX::Types::Moose qw( Str Num ScalarRef ArrayRef Undef
                              HashRef FileHandle Object Int );
@@ -177,6 +177,16 @@ coerce Io,
     from File,       via { my $fh = IO::File->new(); $fh->open("$_"); return $fh },
     from ArrayRef,   via { IO::Handle->new_from_fd( @$_ ) },
     from ScalarRef,  via { IO::String->new( ${$_} ) };
+
+#-----------------------------------------------------------------------------
+
+subtype CommitID,
+  as Str,
+  where   { $_ =~ $PINTO_COMMIT_ID_REGEX },
+  message { 'The commit id (' . (defined() ? $_ : 'undef') . ') must be a hexadecimal string' };
+
+coerce CommitID,
+    from Str,        via { lc $_ };
 
 #-----------------------------------------------------------------------------
 
