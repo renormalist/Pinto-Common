@@ -80,9 +80,10 @@ is(ref $t->targets->[1], 'Pinto::DistributionSpec', 'Coereced DistributionSpec i
 $t->targets( ['Foo'] );
 is(ref $t->targets->[0], 'Pinto::PackageSpec',      'Coerced PackageSpec in array');
 
-$t->commit( 'AAA' );
-is($t->commit, 'aaa',   'Coerced CommitID to lowercase');
+$t->commit( 'AAAA' );
+is($t->commit, 'aaaa',   'Coerced CommitID to lowercase');
 throws_ok {$t->commit('gh123') } qr/hexadecimal/, 'CommitID must be hex';
+throws_ok {$t->commit('abc') } qr/hexadecimal/, 'CommitID must be at least 4 chars';
 
 #-----------------------------------------------------------------------------
 

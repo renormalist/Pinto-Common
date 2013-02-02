@@ -182,8 +182,8 @@ coerce Io,
 
 subtype CommitID,
   as Str,
-  where   { $_ =~ $PINTO_COMMIT_ID_REGEX },
-  message { 'The commit id (' . (defined() ? $_ : 'undef') . ') must be a hexadecimal string' };
+  where   { $_ =~ $PINTO_COMMIT_ID_REGEX and length($_) >= 4 },
+  message { 'The commit id (' . (defined() ? $_ : 'undef') . ') must be a hexadecimal string of 4 or more chars' };
 
 coerce CommitID,
     from Str,        via { lc $_ };
