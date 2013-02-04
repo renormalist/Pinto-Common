@@ -82,5 +82,18 @@ use Pinto::Util qw(:all);
 
 #-----------------------------------------------------------------------------
 
+{
+
+  is( title_text("foo"),      'foo' );
+  is( title_text("foo\nbar"), 'foo' );
+  is( title_text("\nbar"),       '' );
+
+  is( body_text("foo"),         ''      );
+  is( body_text("foo\n"),       ''      );
+  is( body_text("foo\nbar\n"),  "bar\n" );
+}
+
+#-----------------------------------------------------------------------------
+
 done_testing;
 

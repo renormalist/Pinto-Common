@@ -31,6 +31,7 @@ use base qw(Exporter);
 
 Readonly our @EXPORT_OK => qw(
     author_dir
+    body_text
     current_time
     current_username
     decamelize
@@ -45,6 +46,7 @@ Readonly our @EXPORT_OK => qw(
     mtime
     parse_dist_path
     sha256
+    title_text
     trim
 );
 
@@ -336,6 +338,39 @@ sub trim {
     $string =~ s/  \s+ $//x;
 
     return $string;
+}
+
+#-------------------------------------------------------------------------------
+
+=func title_text($string)
+
+Returns all the characters in C<$string> before the first newline.  If
+there is no newline, returns the entire C<$string>.
+
+=cut
+
+sub title_text {
+    my $string = shift;
+
+    my $nl = index $string, "\n";
+    return $nl < 0 ? $string : substr $string, 0, $nl;
+}
+
+#-------------------------------------------------------------------------------
+
+=func body_text($string)
+
+Returns all the characters in C<$string> after the first newline.  If
+there is no newline, returns an empty string.
+
+=cut
+
+sub body_text {
+    my $string = shift;
+
+    my $nl = index $string, "\n";
+    return '' if $nl < 0 or $nl == length $string;
+    return substr $string, $nl + 1;
 }
 
 #-------------------------------------------------------------------------------
