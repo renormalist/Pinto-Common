@@ -8,7 +8,7 @@ use warnings;
 use MooseX::Types -declare => [ qw( AuthorID Username Uri Dir File FileList Io Version
                                     StackName StackAll StackDefault PropertyName PkgSpec
                                     PkgSpecList StackObject DistSpec DistSpecList
-                                    Spec SpecList CommitID) ];
+                                    Spec SpecList CommitID CommitHead) ];
 
 use MooseX::Types::Moose qw( Str Num ScalarRef ArrayRef Undef
                              HashRef FileHandle Object Int );
@@ -189,6 +189,11 @@ coerce CommitID,
     from Str,        via { lc $_ };
 
 #-----------------------------------------------------------------------------
+
+subtype CommitHead, as Undef;
+
+#-----------------------------------------------------------------------------
+
 
 1;
 
