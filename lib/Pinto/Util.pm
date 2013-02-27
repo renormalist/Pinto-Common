@@ -35,6 +35,7 @@ Readonly our @EXPORT_OK => qw(
     current_time
     current_username
     decamelize
+    indent
     interpolate
     is_interactive
     is_stack_all
@@ -392,6 +393,28 @@ sub decamelize {
     return lc $string;
 }
 
+
+#-------------------------------------------------------------------------------
+
+=func indent($string, $n)
+
+Returns a copy of C<$string> with each line indented by C<$n> spaces.
+In other words, it puts C<4n> spaces immediately after each newline
+in C<$string>.  The origianl C<$string> is not modified.
+
+=cut
+
+sub indent {
+    my ($string, $spaces) = @_;
+
+    return $string if not $spaces;
+    return $string if not $string;
+
+    my $indent = ' ' x $spaces;
+    $string =~ s/^/$indent/mg;
+
+    return $string;
+}
 
 #-------------------------------------------------------------------------------
 

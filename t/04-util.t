@@ -91,6 +91,17 @@ use Pinto::Util qw(:all);
   is( body_text("foo"),         ''      );
   is( body_text("foo\n"),       ''      );
   is( body_text("foo\nbar\n"),  "bar\n" );
+
+}
+
+#-----------------------------------------------------------------------------
+
+{
+
+  is( indent("foo"),           "foo" );
+  is( indent("foo\nbar", 2),   "  foo\n  bar" );
+  is( indent("\nfoo\n\n", 2),  "  \n  foo\n  \n" );
+
 }
 
 #-----------------------------------------------------------------------------
