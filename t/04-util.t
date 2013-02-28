@@ -15,9 +15,13 @@ use Pinto::Util qw(:all);
   local $Pinto::Globals::current_username = '__ME__';
   is(current_username, '__ME__', 'Override user');
 
-  isnt(current_time, -9, 'Actual time');
-  local $Pinto::Globals::current_time = -9;
-  is(current_time, -9, 'Override time');
+  isnt(current_utc_time, -9, 'Actual time');
+  local $Pinto::Globals::current_utc_time = -9;
+  is(current_utc_time, -9, 'Override time');
+
+  isnt(current_time_offset, -9, 'Actual time offset');
+  local $Pinto::Globals::current_time_offset = -9;
+  is(current_time_offset, -9, 'Override time offset');
 
   isnt(is_interactive, -9, 'Actual interactive state');
   local $Pinto::Globals::is_interactive = -9;

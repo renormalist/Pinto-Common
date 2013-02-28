@@ -7,6 +7,7 @@ use warnings;
 use version;
 
 use Carp;
+use DateTime;
 use Try::Tiny;
 use Path::Class;
 use Digest::MD5;
@@ -34,7 +35,8 @@ Readonly our @EXPORT_OK => qw(
     author_dir
     body_text
     current_author_id
-    current_time
+    current_utc_time
+    current_time_offset
     current_username
     decamelize
     indent
@@ -261,13 +263,36 @@ overridden by C<$Pinto::Globals::current_time>.
 
 =cut
 
-sub current_time {
+sub current_utc_time {
 
     ## no critic qw(PackageVars)
-    return $Pinto::Globals::current_time
-      if defined $Pinto::Globals::current_time;
+    return $Pinto::Globals::current_utc_time
+      if defined $Pinto::Globals::current_utc_time;
 
     return time;
+}
+
+#-------------------------------------------------------------------------------
+
+=func current_time_offset()
+
+Returns the offset between current UTC time and the local time in
+seconds, unless overridden by C<$Pinto::Globals::current_time_offset>.
+The C<current_time> function is used to determine the current UTC
+time.
+
+=cut
+
+sub current_time_offset {
+
+    ## no critic qw(PackageVars)
+    return $Pinto::Globals::current_time_offset
+      if defined $Pinto::Globals::current_time_offset;
+
+    my $now    = current_utc_time;
+    my $time   = DateTime->from_epoch(epoch => $now, time_zone => 'local');
+
+    return $time->offset;
 }
 
 #-------------------------------------------------------------------------------
