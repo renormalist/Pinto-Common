@@ -12,6 +12,7 @@ use Path::Class;
 use Digest::MD5;
 use Digest::SHA;
 use Scalar::Util;
+use UUID::Tiny;
 use IO::Interactive;
 use Readonly;
 
@@ -32,6 +33,7 @@ use base qw(Exporter);
 Readonly our @EXPORT_OK => qw(
     author_dir
     body_text
+    current_author_id
     current_time
     current_username
     decamelize
@@ -49,6 +51,7 @@ Readonly our @EXPORT_OK => qw(
     sha256
     title_text
     trim
+    uuid
 );
 
 Readonly our %EXPORT_TAGS => ( all => \@EXPORT_OK );
@@ -271,8 +274,10 @@ sub current_time {
 
 =func current_username()
 
-Returns the id of the current user unless it has been overridden by
-C<$Pinto::Globals::current_username>.
+Returns the username of the current user unless it has been overridden by
+C<$Pinto::Globals::current_username>.  The username can be defined through
+a number of environment variables.  Throws an exception if no username
+can be determined.
 
 =cut
 
@@ -287,6 +292,28 @@ sub current_username {
     die "Unable to determine your username.  Set PINTO_USERNAME." if not $username;
 
     return $username
+}
+
+#-------------------------------------------------------------------------------
+
+=func current_author_id()
+
+Returns the author id of the current user unless it has been overridden by
+C<$Pinto::Globals::current_author_id>.  The author id can be defined through
+environment variables.  Otherwise it defaults to the upper-case form of the
+C<current_username>.
+
+=cut
+
+sub current_author_id {
+
+    ## no critic qw(PackageVars)
+    return $Pinto::Globals::current_author_id
+      if defined $Pinto::Globals::current_author_id;
+
+    my $author_id =  $ENV{PINTO_AUTHOR_ID} || uc current_username;
+
+    return $author_id;
 }
 
 #-------------------------------------------------------------------------------
@@ -449,6 +476,20 @@ sub is_stack_all {
 
     return defined $stack_name && $stack_name eq $PINTO_STACK_NAME_ALL;
 }
+
+#-------------------------------------------------------------------------------
+
+=func uuid()
+
+Returns a UUID as a string.  Currently, the UUID is derived from
+random numbers.
+
+=cut
+
+sub uuid {
+  return UUID::Tiny::create_uuid_as_string( UUID::Tiny::UUID_V4 );
+}
+
 
 #-------------------------------------------------------------------------------
 1;
