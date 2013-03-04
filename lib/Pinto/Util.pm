@@ -256,10 +256,10 @@ sub validate_stack_name {
 
 #-------------------------------------------------------------------------------
 
-=func current_time()
+=func current_utc_time()
 
 Returns the current time (in epoch seconds) unless the current time has been
-overridden by C<$Pinto::Globals::current_time>.
+overridden by C<$Pinto::Globals::current_utc_time>.
 
 =cut
 
