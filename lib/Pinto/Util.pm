@@ -39,7 +39,7 @@ Readonly our @EXPORT_OK => qw(
     current_time_offset
     current_username
     decamelize
-    indent
+    indent_text
     interpolate
     is_interactive
     is_stack_all
@@ -52,7 +52,7 @@ Readonly our @EXPORT_OK => qw(
     parse_dist_path
     sha256
     title_text
-    trim
+    trim_text
     truncate_text
     uuid
 );
@@ -379,13 +379,13 @@ sub interpolate {
 
 #-------------------------------------------------------------------------------
 
-=func trim($string)
+=func trim_text($string)
 
 Returns the string with all leading and trailing whitespace removed.
 
 =cut
 
-sub trim {
+sub trim_text {
     my $string = shift;
 
     $string =~ s/^ \s+  //x;
@@ -472,7 +472,7 @@ sub decamelize {
 
 #-------------------------------------------------------------------------------
 
-=func indent($string, $n)
+=func indent_text($string, $n)
 
 Returns a copy of C<$string> with each line indented by C<$n> spaces.
 In other words, it puts C<4n> spaces immediately after each newline
@@ -480,7 +480,7 @@ in C<$string>.  The origianl C<$string> is not modified.
 
 =cut
 
-sub indent {
+sub indent_text {
     my ($string, $spaces) = @_;
 
     return $string if not $spaces;
