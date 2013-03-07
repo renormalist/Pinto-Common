@@ -53,7 +53,7 @@ Readonly our @EXPORT_OK => qw(
     sha256
     title_text
     trim
-    trunc
+    truncate_text
     uuid
 );
 
@@ -429,15 +429,15 @@ sub body_text {
 
 #-------------------------------------------------------------------------------
 
-=func trunc($string, $length, $elipses)
+=func truncate_text($string, $length, $elipses)
 
-Shortens the C<$string> and appends C<$elipses> if the C<$string> is 
+Truncates the C<$string> and appends C<$elipses> if the C<$string> is 
 longer than C<$length> characters.  C<$elipses> defaults to '...' if 
 not specified.
 
 =cut
 
-sub trunc {
+sub truncate_text {
     my ($string, $max_length, $elipses) = @_;
 
     return $string if not $max_length;
