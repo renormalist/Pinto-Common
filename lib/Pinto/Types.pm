@@ -8,7 +8,7 @@ use warnings;
 use MooseX::Types -declare => [ qw( AuthorID Username Uri Dir File FileList Io Version
                                     StackName StackAll StackDefault PropertyName PkgSpec
                                     PkgSpecList StackObject DistSpec DistSpecList
-                                    Spec SpecList CommitID CommitHead) ];
+                                    Spec SpecList RevisionID RevisionHead) ];
 
 use MooseX::Types::Moose qw( Str Num ScalarRef ArrayRef Undef
                              HashRef FileHandle Object Int );
@@ -180,17 +180,17 @@ coerce Io,
 
 #-----------------------------------------------------------------------------
 
-subtype CommitID,
+subtype RevisionID,
   as Str,
-  where   { $_ =~ $PINTO_COMMIT_ID_REGEX and length($_) >= 4 },
-  message { 'The commit id (' . (defined() ? $_ : 'undef') . ') must be a hexadecimal string of 4 or more chars' };
+  where   { $_ =~ $PINTO_REVISION_ID_REGEX and length($_) >= 4 },
+  message { 'The revision id (' . (defined() ? $_ : 'undef') . ') must be a hexadecimal string of 4 or more chars' };
 
-coerce CommitID,
+coerce RevisionID,
     from Str,        via { lc $_ };
 
 #-----------------------------------------------------------------------------
 
-subtype CommitHead, as Undef;
+subtype RevisionHead, as Undef;
 
 #-----------------------------------------------------------------------------
 

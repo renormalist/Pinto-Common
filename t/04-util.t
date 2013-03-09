@@ -102,9 +102,21 @@ use Pinto::Util qw(:all);
 
 {
 
-  is( indent("foo"),           "foo" );
-  is( indent("foo\nbar", 2),   "  foo\n  bar" );
-  is( indent("\nfoo\n\n", 2),  "  \n  foo\n  \n" );
+  is( indent_text("foo"),           "foo" );
+  is( indent_text("foo\nbar", 2),   "  foo\n  bar" );
+  is( indent_text("\nfoo\n\n", 2),  "  \n  foo\n  \n" );
+
+}
+
+
+#-----------------------------------------------------------------------------
+
+{
+
+  is( truncate_text("foobar", 3),           "foo..." );
+  is( truncate_text("foobar", 6),           "foobar" );
+  is( truncate_text("foobar", 0),           "foobar" );
+  is( truncate_text("foobar", 3, '-'),      "foo-" );
 
 }
 
