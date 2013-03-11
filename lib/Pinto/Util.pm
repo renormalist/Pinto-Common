@@ -43,6 +43,7 @@ Readonly our @EXPORT_OK => qw(
     interpolate
     is_interactive
     is_stack_all
+    is_system_prop
     is_vcs_file
     isa_perl
     itis
@@ -524,6 +525,21 @@ sub is_stack_all {
     my $stack_name = shift;
 
     return defined $stack_name && $stack_name eq $PINTO_STACK_NAME_ALL;
+}
+
+#-------------------------------------------------------------------------------
+
+=func is_system_prop($string)
+
+Returns true if C<$string> is the name of a system property.
+
+=cut
+
+sub is_system_prop {
+    my $string = shift;
+
+    return 0 if not $string;
+    return $string =~ m/^pinto-/;
 }
 
 #-------------------------------------------------------------------------------
