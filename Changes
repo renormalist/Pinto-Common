@@ -2,9 +2,15 @@
 
     Added PkgSpecList and DistSpecList types.
 
+    Added Username and RevisionID types.
+
     Specs type has been renamed to SpecList.
 
     Files type has been renamed to FileList.
+
+    Author type has been renamed to AuthorID
+
+    Added several new utility functions used by Pinto.
 
 0.064     2012-11-14 00:22:32 America/Los_Angeles
 
