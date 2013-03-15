@@ -15,58 +15,54 @@ __END__
 
 =head1 CREATING THE REPOSITORY
 
+  # A new repository with default stack named "master"
+  pinto -r /repo/dir
+
   # A new repository with default stack named "dev"
   pinto -r /repo/dir dev
-
-  # A new repository without any stacks
-  pinto -r /repo/dir init
 
 =head1 BROWSING THE REPOSITORY
 
   # See all packages in the default stack
   pinto -r /repo/dir list
 
-  # See all packages in the default stack matching "Foo"
-  pinto -r /repo/dir list -P Foo
+  # See all packages in the default stack matching "Foo::Bar"
+  pinto -r /repo/dir list -P Foo::Bar
 
   # See all packages in the default stack by author "JOE"
   pinto -r /repo/dir list -A JOE
 
-  # See all packages in the stack called "dev"
+  # See all packages in the "dev" stack
   pinto -r /repo/dir list --stack dev
   pinto -r /repo/dir list dev
 
-  # See all packages across all stacks
-  pinto -r /repo/dir list --stack @
-  pinto -r /repo/dir list @
-
 =head1 PULLING UPSTREAM DISTRIBUTIONS
 
-  # Pull latest version of Foo
-  pinto -r /repo/dir pull Foo
+  # Pull latest version of Foo::Bar
+  pinto -r /repo/dir pull Foo::Bar
 
-  # Pull version 2.4 or newer of Foo
+  # Pull version 2.4 or newer of Foo::Bar
   pinto -r /repo/dir pull Foo~2.4
 
-  # Pull a precise distribution
-  pinto -r /repo/dir pull AUTHOR/Foo-1.9.tar.gz
+  # Pull a specific distribution
+  pinto -r /repo/dir pull AUTHOR/Foo-Bar-1.9.tar.gz
 
   # Pull and pin at the same time
-  pinto -r /repo/dir pull --pin Foo~2.4
+  pinto -r /repo/dir pull --pin Foo::Bar~2.4
 
   # Pull many packages or distributions
-  pinto -r /repo/dir pull Foo Bar Baz Nuts ...
+  pinto -r /repo/dir pull Foo::Bar Baz::Qux ...
   pinto -r /repo/dir pull < LIST_OF_PACKAGES
 
   # Pull everything for a Dist::Zilla project
   dzil listdeps | pinto -r /repo/dir pull
 
-  # Pull onto a stack called "dev"
-  pinto -r /repo/dir pull --stack dev Foo
+  # Pull onto the "dev" stack
+  pinto -r /repo/dir pull --stack dev Foo::Bar
 
 =head1 ADDING LOCAL DISTRIBUTIONS
 
-  # Add local dist
+  # Add a local dist to the default stack
   pinto -r /repo/dir add My-Dist-1.0.tar.gz
 
   # Assign to a different author
@@ -75,85 +71,85 @@ __END__
   # Add and pin at the same time
   pinto -r /repo/dir add --pin My-Dist-1.0.tar.gz
 
-  # Add to a stack called "dev"
+  # Add to the "dev" stack
   pinto -r /repo/dir add --stack dev My-Dist-1.0.tar.gz
 
 =head1 INSTALLING THINGS
 
-  # Install from the default stack
-  pinto -r /repo/dir install My::App
+  # Install from the default stack using using cpanm
+  cpanm --mirror file:///repo/dir --mirror-only Foo::Bar
 
-  # Install into a local::lib directory
-  pinto -r /repo/dir install -l sandbox My::App
+  # Install from the "dev" stack using using cpanm
+  cpanm --mirror file:///repo/dir/stacks/dev --mirror-only Foo::Bar
 
-  # Install from a stack called "dev"
-  pinto -r /repo/dir install --stack dev My::App
+  # Install from the default stack using pinto
+  pinto -r /repo/dir install Foo::Bar
+
+  # Install from the "dev" stack using pinto
+  pinto -r /repo/dir --stack dev install Foo::Bar
 
   # Install and populate the repository with missing prereqs
-  pinto -r /repo/dir install --pull My::App
+  pinto -r /repo/dir install --pull Foo::Bar
 
 =head1 MANAGING STACKS
 
-  # Create an empty stack called "qa"
+  # Create an empty stack named "qa"
   pinto -r /repo/dir new qa
 
-  # Create a stack by copying qa -> dev
-  pinto -r /repo/dir copy qa dev
-
-  # Merge the dev stack into qa
-  pinto -r /repo/dir merge dev qa
+  # Create a stack by copying "dev" to "qa"
+  pinto -r /repo/dir copy dev qa
 
   # Delete the dev stack
   pinto -r /repo/dir kill dev
 
-  # Show the names of existing stacks
-  pinto -r /repo/dir stacks
+  # Rename the "dev" stack to "prod"
+  pinto -r /repo/dir rename dev prod
 
   # Mark the "qa" stack as the default
   pinto -r /repo/dir default qa
 
-  # Show config properties of the "qa" stack
-  pinto -r /repo/dir config qa
+  # Show config properties of the default stack
+  pinto -r /repo/dir props
 
-  # Set config properties of the "qa" stack
-  pinto -r /repo/dir --prop NAME=VALUE
+  # Set config properties of the default stack
+  pinto -r /repo/dir props --property NAME=VALUE
+
+  # Show all the existing stacks
+  pinto -r /repo/dir stacks
 
 =head1 USING PINS
 
   # Pin a package on the default stack
-  pinto -r /repo/dir pin Some::Package
+  pinto -r /repo/dir pin Foo::Bar
 
-  # Pin a package on a stack called "dev"
-  pinto -r /repo/dir pin --stack dev Some::Package
+  # Pin a package on the "dev" stack
+  pinto -r /repo/dir pin --stack dev Foo::Bar
 
   # Pin a distribution
-  pinto -r /repo/dir pin AUTHOR/Some-Dist-1.0.tar.gz
+  pinto -r /repo/dir pin AUTHOR/Foo-Bar-1.0.tar.gz
 
   # Unpin a package from the default stack
-  pinto -r /repo/dir unpin Some::Package
+  pinto -r /repo/dir unpin Fo::Bar
 
-  # Unpin a package from stack called "dev"
-  pinto -r /repo/dir unpin --stack dev Some::Package
+  # Unpin a package from the "dev" stack
+  pinto -r /repo/dir unpin --stack dev Foo::Bar
 
   # Unpin a distribution
-  pinto -r /repo/dir unpin AUTHOR/Some-Dist-1.0.tar.gz
+  pinto -r /repo/dir unpin AUTHOR/Foo-Bar-1.0.tar.gz
 
 =head1 VERSION CONTROL
 
   # View commit messages for the default stack
   pinto -r /repo/dir log
 
-  # View commit message from revision 12 of a stack called "dev"
-  pinto -r /repo/dir log dev@12
+  # View commit messages for the "dev" stack
+  pinto -r /repo/dir log dev
 
-  # Rollback the default stack to the previous revision
-  pinto -r /repo/dir revert
+  # Compare the heads of the default and "qa" stacks
+  pinto -r /repo/dir diff qa
 
-  # Rollback the "qa" stack to revision 29
-  pinto -r /repo/dir revert qa@29
-
-  # See who/when each package was put in the default stack
-  pinto -r /repo/dir blame
+  # Compare the heads of the "dev" and "qa" stacks
+  pinto -r /repo/dir diff dev qa
 
 =head1 MISCELLANY
 
@@ -162,6 +158,9 @@ __END__
 
   # Report repo statistics
   pinto -r /repo/dir stats
+
+  # Remove orphan files and tune the database
+  pinto -r /repo/dir clean
 
 =head1 GETTING MORE HELP
 

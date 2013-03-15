@@ -42,7 +42,7 @@ more information on that.
 The first step in using Pinto is to create a repository, using the
 L<init|App::Pinto::Command::init> command like this:
 
-  $> pinto -r ~/repo init dev
+  $> pinto -r ~/repo init
 
 This will create a new repository in the F<~/repos> directory.  If
 that directory does not exist, it will be created for you.  If it
@@ -53,8 +53,9 @@ This argument is required for every L<pinto> command.  But if you get
 tired of typing it, you can set the C<PINTO_REPOSITORY_ROOT>
 environment variable to point to your repository instead.
 
-The C<dev> argument is the name of the initial stack in the
-repository.  We'll discuss stacks in more detail later on.
+The repository is created with a stack called "master" which is also 
+marked as the default stack.  We'll talk more about stacks and default 
+stack later.
 
 =head2 Inspecting the repository
 
@@ -77,6 +78,11 @@ bring the URI package into your repository:
 
   $> pinto -r ~/repo pull URI
 
+You will be prompted to enter a log message that describes why this
+change is happening.  The message template will include a semi-informative
+generated message.  Feel free to edit this message as you see fit.
+Save the file and close your editor when you are done.
+
 Now, you should have URI in your local repository.  So lets look
 and see what we really got.  Once again, you use the
 L<list|App::Pinto::Command::list> command to see inside the
@@ -92,22 +98,8 @@ This time, the listing will look something like this:
   ...
 
 You can see that the URI package has been added to the repository, as
-well as all the other packages that were in that distribution.  You
-can repeat this process for each package that your application depends
-on.  In fact, you can pull all your prerequisites into the repository
-at once...
-
-  $> pinto -r ~/repo pull URI LWP Catalyst Plack ...
-
-Or if you're using L<Dist::Zilla> to build your application, you can ask
-it to provide the list of prerequisites...
-
-  # From the My-App dist directory...
-  $> dzil listdeps | pinto -r ~/repo pull
-
-If any of those prerequisites have prerequisites of their own, then they
-will be recursively pulled as well, until the repository contains all
-the distributions required to build My-App from scratch.
+well as all the prerequisites for URI, and all of their prerequisites,
+and so on.
 
 =head2 Adding your own distributions
 
@@ -144,6 +136,19 @@ to the CPAN in the future, C<My::App> will always be built with the
 same versions of the same prerequisites that you developed and tested
 against.  This ensures your application builds will be stable and
 predictable.
+
+On the surface, a Pinto repository looks like an ordinary CPAN, so you 
+can also install packages from it using L<cpnam> directly.  All you have 
+to do is point them at the URL of your repository.  For example:
+
+  $> cpanm --mirror file:///home/jeff/repo --mirror-only My::App
+
+The C<--mirror-only> flag is important because it tells L<cpnam> to B<not>
+look in other repositories for missing prerequisites.  Usually, you only
+want to install things from B<your> repository.
+
+You can do the same thing with L<cpan> and L<cpanp> as well.  Se their
+documentation for information on how to set the URL of the repository.  
 
 =head2 Upgrading a dependency
 
@@ -198,14 +203,14 @@ default stack.  For most operations, the name of the stack is an
 optional parameter.  So if you do not specify a stack explicitly, then
 the operation is applied to whichever stack is marked as the default.
 
-In any repository, there never more than one default stack.  When we
-created this repository, we specified the initial stack to be C<dev>
-and this stack was marked as the default.  You can also change the
-default stack, but we won't go into that here.  See the
-L<default|App::Pinto::Command::default> command to learn more about that.
+In any repository, there is never more than one default stack.  When we
+created this repository, we the C<master> stack was marked as the default.  
+You can also change the default stack or change the name of a stack, but 
+we won't go into that here.  See the L<default|App::Pinto::Command::default>
+command to learn more about that.
 
-Just remember that C<dev> is the name of the stack that we created
-when the repository was first set up.
+Just remember that C<master> is the name of the stack that was created
+when the repository was first initialized.
 
 =head2 Creating a stack
 
@@ -215,21 +220,20 @@ want to try upgrading, but this time you're going to do it on a
 separate stack.
 
 Thus far, everything you've added or pulled into the repository has
-gone onto the C<dev> stack.  You could create an entirely new stack,
-but the C<dev> stack already has the prerequisites for My-App, so
-we're just going to make a clone using the
-L<copy|App::Pinto::Command::copy> command:
+gone onto the C<master> stack.  You could create an entirely new stack,
+but the C<master> stack already has the prerequisites for My-App, so
+we're just going to make a clone using the L<copy|App::Pinto::Command::copy> 
+command:
 
-  $> pinto -r ~/repo copy dev uri_upgrade
+  $> pinto -r ~/repo copy master uri_upgrade
 
-This creates a new stack called C<uri_upgrade> (stack names must be
-alphanumeric and are case insensitive).  If you want to see the
+This creates a new stack called C<uri_upgrade>.  If you want to see the
 contents of that stack, just use the L<list|App::Pinto::Command::list>
 command with the C<--stack> option:
 
   $> pinto -r ~/repo list --stack uri_upgrade
 
-The listing should be identical to the C<dev> stack:
+The listing should be identical to the C<master> stack:
 
   rl  My::App                         1.0  JEFF/My-App-1.0.tar.gz
   rf  URI                            1.60  GAAS/URI-1.60.tar.gz
@@ -238,25 +242,27 @@ The listing should be identical to the C<dev> stack:
 =head2 Upgrading a stack
 
 Now that you've got a separate stack, you can try upgrading URI.  Just
-as before, you'll use the L<pull|App::Pinto::Command::pull> command,
-but this time, you'll tell Pinto that you want the package to be
+as before, you'll use the L<pull|App::Pinto::Command::pull> command.
+But this time, you'll tell Pinto that you want the packages to be
 pulled onto the C<uri_upgrade> stack:
 
   $> pinto -r ~/repo pull --stack uri_upgrade URI~1.62
 
-Now look at the repository contents again.  You'll use the
-L<list|App::Pinto::Command::list> command, but this time you'll use
-the special stack name "%" to indicate that we want to look at all the
-stacks.  In addition, you'll use the C<--packages> option to limit the
-listing to just the packages that you are interested in:
+Now lets compare the C<master> and C<uri_upgrade> stacks using the
+L<diff|App::Pinto::Command::diff> command:
 
-  $> pinto -r ~/repos/ list --stack %  --packages URI
+  $> pinto -r ~/repos/ diff master uri_upgrade
 
-You'll see that the C<dev> stack still contains version 1.60 of URI,
-but the C<uri_upgarde> stack now contains version 1.62:
+  +rf URI                                              1.62 GAAS/URI-1.62.tar.gz
+  +rf URI::Escape                                      3.31 GAAS/URI-1.62.tar.gz
+  +rf URI::Heuristic                                   4.20 GAAS/URI-1.62.tar.gz
+  ...
+  -rf URI                                              1.60 GAAS/URI-1.60.tar.gz
+  -rf URI::Escape                                      3.31 GAAS/URI-1.60.tar.gz
+  -rf URI::Heuristic                                   4.20 GAAS/URI-1.60.tar.gz
 
-  dev:          rf URI                1.60 GAAS/URI-1.60.tar.gz
-  uri_upgrade:  rf URI                1.62 GAAS/URI-1.62.tar.gz
+The output is similar to the diff(1) command. Records starting with a 
+"+" were added and those starting with a "-" have been removed.
 
 =head2 Installing from a stack
 
@@ -271,13 +277,19 @@ This will build My::App using only the prerequisites that are on the
 C<uri_upgrade> stack.  If the tests pass, then you can confidently
 upgrade URI on the C<dev> stack as well.
 
+As mentioned earlier, you can also use L<cpanm> to install modules from
+your repository.  But when installing from a particular stack, you must
+append it to the URL.  For example:
+
+  $> cpanm --mirror file:///home/jeff/repo/stacks/uri_upgrade --mirror-only My::App
+
 =head1 USING PINS
 
 In the last section, we used a stack to experiment with upgrading a
 dependency.  Fortunately, all the tests passed.  But what if the tests
 didn't pass?  If the problem lies within My-App and you can quickly
 correct it, you might just modify your code, release version 2.0 of
-My-App, and then proceed to upgrade URI on the C<dev> stack.
+My-App, and then proceed to upgrade URI on the C<master> stack.
 
 But if the issue is a bug in URI or it will take a long time to fix
 My-App, then you have a real problem.  You don't want someone else to
@@ -295,16 +307,16 @@ L<pin|App::Pinto::Command::pin> command like this:
 
   $> pinto -r ~/repo pin URI
 
-If you look at the listing for the C<dev> stack again, you'll see
+If you look at the listing for the C<master> stack again, you'll see
 something like this:
 
   ...
   rl  My::App                         1.0  JEFF/My-App-1.0.tar.gz
-  rf+ URI                            1.60  GAAS/URI-1.60.tar.gz
-  rf+ URI::Escape                    3.31  GAAS/URI-1.60.tar.gz
+  rf! URI                            1.60  GAAS/URI-1.60.tar.gz
+  rf! URI::Escape                    3.31  GAAS/URI-1.60.tar.gz
   ...
 
-The "+" near the beginning of the line indicates the package has been
+The "!" near the beginning of the line indicates the package has been
 pinned.  Notice every package in the F<URI-1.60.tar.gz> distribution
 has been pinned, so it is impossible to partially upgrade a
 distribution (this situation could happen when a package moves into a
@@ -337,25 +349,6 @@ the C<dev> stack.  If an upgraded package breaks your application, then
 you'll place a pin in that package on the C<prod> stack to signal that
 it shouldn't be upgraded.
 
-As you reach the end of the development cycle, you can merge all the
-changes on the C<dev> stack back to the C<prod> stack using the
-L<merge|App::Pinto::Command::merge> command like this:
-
-  $> pinto -r ~/repo merge dev prod
-
-If the C<prod> stack contains pins that conflict with the packages in
-the C<dev> stack, then the merge is aborted.  If the tests are all
-passing when you build from the C<dev> stack, then you can probably go
-ahead and unpin the packages on the C<prod> stack and merge again.
-But if not, then you continue development until the tests pass and
-then merge.
-
-Alternatively, you could downgrade the appropriate packages on the
-C<dev> stack to match C<prod>, but this is only allowed if something
-on the stack doesn't require the newer version.  And of course, you
-should verify that your tests will still pass with the older version
-too.
-
 =head2 Pins and Patches
 
 Sometimes you may find that a new version of a CPAN distribution has a
@@ -380,9 +373,9 @@ When the author of URI releases version 1.62 with your patch,
 you'll want to try it before deciding to unpin from your locally
 patched version.  Just as before, this can be done by cloning the
 stack with the L<copy|App::Pinto::Command::copy> command.  Let's call
-it the "trial" stack this time:
+it the C<trial> stack this time:
 
- $> pinto -r ~/repo copy dev trial
+ $> pinto -r ~/repo copy master trial
 
 But before you can upgrade URI on the C<trial> stack, you'll have to
 unpin it there:
@@ -395,128 +388,45 @@ C<My::App> like this:
   $> pinto -r ~/repo pull --stack trial URI~1.62
   $> pinto -r ~/repo install --stack trial My::App
 
-If all goes well, remove the pin from the C<dev> stack and pull your
+If all goes well, remove the pin from the C<master> stack and pull your
 latest version of URI back to it.
 
   $> pinto -r ~/repo unpin URI
   $> pinto -r ~/repo pull URI~1.62
 
-=head2 Rolling Back Changes
+=head2 Reviewing Past Changes
 
-In a perfect world, your unit tests immediately tell you when an
-upgraded dependency has broken your application.  But the world is not
-perfect, so you may not learn that your application is broken until
-long after you upgraded the stack and released the app.  In those
-situations, you can use the L<revert|App::Pinto::Command::revert>
-command to restore the stack a prior state.
+As you've noticed by now, each command that changes the state of a stack
+requires a log message to describe it.  You can review those messages
+using the L<log|App::Pinto::Command::log> command:
 
-Suppose that we've discovered that version 1.62 of URI has broken
-MyApp.  If the problem lies within our code and we can fix it
-quickly, then we could just put a new release into the repository.
-But if the problem lies within URI, or one of its dependencies, or we
-just don't know where the problem is, then we can roll the stack back
-to the previous state
-
-  $> pinto -r ~/repo revert
-
-If we look at the listing now, we see that the stack has gone back to
-the locally patched version of URI that we added just before upgrading
-to version 1.62 of URI.
-
-  ...
-  rl  My::App                         1.0  JEFF/My-App-1.0.tar.gz
-  rf  URI                            1.60  JEFF/URI-1.60_PATCHED.tar.gz
-  rf  URI::Escape                    3.31  JEFF/URI-1.60_PATCHED.tar.gz
-  ...
-
-Each pinto command that changes the state of a stack (e.g. C<add>,
-C<pull>, C<merge>, C<new>, C<copy>, C<revert>) constitutes one
-revision on that stack.  You can then restore the stack to the state
-at any prior revision.  Use the L<log|App::Pinto::Command::log>
-command to review the changes that have occurred on a stack and
-identify the revision that you want to revert to.
-
-  $> pinto -r ~/repo log -d
+  $> pinto -r ~/repo log
 
 That should display something like this:
 
-  ---------------------------------------------------------------------------
-  dev@4 | jeff | Thu Sep 20 11:12:18 GMT 2012
+  revision 4a62d7ce-245c-45d4-89f8-987080a90112
+  Date: Mar 15, 2013 1:58:05 PM
+  User: jeff 
+  
+       Pin GAAS/URI-1.59.tar.gz
 
-  URI-1.60 is broken, so replacing it with our patched version
+       Pinning URI because it is not causes our foo.t script to fail
+  
+  revision 4a62d7ce-245c-45d4-89f8-987080a90112
+  Date: Mar 15, 2013 1:58:05 PM
+  User: jeff 
+  
+       Pull GAAS/URI-1.59.tar.gz
 
-  D GAAS/URI-1.60.tar.gz/URI~1.60
-  A JEFF/URI-1.60_PATCHED.tar.gz/URI~1.60
-  D GAAS/URI-1.60.tar.gz/URI::Escape~1.60
-  A JEFF/URI-1.60_PATCHED.tar.gz/URI::Escape~1.60
+       URI is required for HTTP support in our application
+
   ...
 
-The header for each log record shows the stack name, revision number,
-the user who performed the revision, and the message that accompanied
-it.  Below the header, you can see exactly which packages were deleted
-(D) and added (A) to the stack.
-
-=head1 WORKING WITH LEGACY CODE
-
-In the My-App example, there was only one dependency.  But any
-non-trivial legacy application will already have many dependencies.
-And by the time you create a Pinto repository for them, the CPAN may
-already have newer versions of those dependencies.  Or in some cases,
-the version you've been using may only be available on the BackPAN.
-
-For large legacy projects, I recommend using L<Dist::Surveyor> to
-discover which versions of which dependencies your application has
-been using thus far.  L<Dist::Surveyor> will examine your run-time
-environment and produce a list of the precise distributions that
-you'll need.  You can then bring all those distributions into your
-repository with the L<pull|App::Pinto::Command::pull> command:
-
-  $> pinto -r ~/repo pull --norecurse < LIST_OF_DISTS
-
-Notice the C<--norecurse> option here.  This time, you don't want
-Pinto to recursively pull prerequisites.  Instead, you just want it to
-fetch the specific distributions that are in your list.  If the list
-is complete, the repository will end up with everything that is needed
-to build your environment exactly the way it is.  If the list is not
-complete, then you'll need to hunt down the missing distributions and
-add them to the repository manually (perhaps you stashed them in your
-VCS), or settle for upgrading to the current versions on the CPAN.
-
-=head1 PINTO AND THE DEVELOPMENT CYCLE
-
-In the My-App example, we started out with an application that already
-depended on URI.  But in practice, we usually don't know what our
-application will depend on in advance.  Often times, we shop around
-and try out several dependencies before settling on the ones we really
-want.
-
-By the time you reach a decision, you may have installed several
-different things in your development environment.  You usually know
-what *your* application depends on, but you can easily loose track of
-all the prerequisites for those dependencies.  If this process takes
-several days or weeks, there is a risk that the latest packages in the
-CPAN may drift from your development environment.  Then you'll have to
-re-discover your dependencies and add them to the repository, and that
-is a hassle.
-
-Fortunately, you can use the L<install|App::Pinto::Command::install>
-command to help build your development environment and populate the
-repository at the same time.  Suppose you keep your own development
-environment in F<~/perl5> (perhaps using L<local::lib> or L<perlbrew>.
-When you want to try a new web framework, you can ask Pinto to install
-it into your local development environment, like this:
-
-  $> pinto -r ~/repo install Dancer -l ~/perl5 --pull
-
-The C<-l> option is passed to L<cpanm> and directs it to install
-packages into your F<~/perl5> directory instead of C<site_perl>.  The
-C<--pull> option also tells Pinto to pull any prerequisites that it
-needs (including Dancer itself) if they aren't already in the
-repository.
-
-In this manner, you can organically grow your development environment.
-And when you finally decide which packages you really want, they will
-already be in the repository.
+The header for each message shows who made the change and when it happened.  
+It also has a unique identifier similar to Git's SHA-1 digests.  You can 
+use these identifiers to see the diffs between different revisions or to 
+reset the stack back to a prior revision [NB: this feature is not actually 
+implemented yet].
 
 =head1 CONCLUSION
 

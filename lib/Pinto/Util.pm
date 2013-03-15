@@ -101,7 +101,7 @@ sub itis {
 Parses a path like the ones you would see in a full URL to a
 distribution in a CPAN repository, or the URL fragment you would see
 in a CPAN index.  Returns the author and file name of the
-distribution.  Subdirectoires between the author name and the file
+distribution.  Subdirectories between the author name and the file
 name are discarded.
 
 =cut
@@ -145,7 +145,7 @@ sub isa_perl {
 =func is_vcs_file( $path );
 
 Returns true if C<$path> appears to point to a file that is an
-internal part of a VCS system.
+internal part of a version control system.
 
 =cut
 
@@ -316,7 +316,7 @@ sub current_username {
 
     my $username =  $ENV{PINTO_USERNAME} || $ENV{USER} || $ENV{LOGIN} || $ENV{USERNAME} || $ENV{LOGNAME};
 
-    die "Unable to determine your username.  Set PINTO_USERNAME." if not $username;
+    croak "Unable to determine your username.  Set PINTO_USERNAME." if not $username;
 
     return $username
 }
@@ -456,7 +456,7 @@ sub truncate_text {
 =func decamelize($string)
 
 Returns the string forced to lower case and words separated by underscores.
-For example "FooBar" becomes "foo_bar".
+For example C<FooBar> becomes C<foo_bar>.
 
 =cut
 
@@ -465,7 +465,7 @@ sub decamelize {
 
     return if not defined $string;
 
-    $string =~ s/([a-z])([A-Z])/$1_$2/g;
+    $string =~ s/ ([a-z]) ([A-Z]) /$1_$2/xg;
 
     return lc $string;
 }
@@ -477,7 +477,7 @@ sub decamelize {
 
 Returns a copy of C<$string> with each line indented by C<$n> spaces.
 In other words, it puts C<4n> spaces immediately after each newline
-in C<$string>.  The origianl C<$string> is not modified.
+in C<$string>.  The original C<$string> is not modified.
 
 =cut
 
@@ -488,7 +488,7 @@ sub indent_text {
     return $string if not $string;
 
     my $indent = ' ' x $spaces;
-    $string =~ s/^/$indent/mg;
+    $string =~ s/^ /$indent/xmg;
 
     return $string;
 }
@@ -507,7 +507,7 @@ sub mksymlink {
     my ($from, $to) = @_;
 
     # TODO: Try to add Win32 support here, somehow.
-    symlink $to, $from or die "symlink to $to from $from failed: $!";
+    symlink $to, $from or croak "symlink to $to from $from failed: $!";
 
     return 1;
 }
@@ -539,7 +539,7 @@ sub is_system_prop {
     my $string = shift;
 
     return 0 if not $string;
-    return $string =~ m/^pinto-/;
+    return $string =~ m/^ pinto- /x;
 }
 
 #-------------------------------------------------------------------------------
