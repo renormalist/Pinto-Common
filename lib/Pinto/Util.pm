@@ -38,13 +38,12 @@ Readonly our @EXPORT_OK => qw(
     current_utc_time
     current_time_offset
     current_username
+    debug
     decamelize
     indent_text
     interpolate
     is_interactive
-    is_stack_all
     is_system_prop
-    is_vcs_file
     isa_perl
     itis
     md5
@@ -55,7 +54,9 @@ Readonly our @EXPORT_OK => qw(
     title_text
     trim_text
     truncate_text
+    user_colors
     uuid
+    whine
 );
 
 Readonly our %EXPORT_TAGS => ( all => \@EXPORT_OK );
@@ -138,25 +139,6 @@ sub isa_perl {
     my ($path_or_url) = @_;
 
     return $path_or_url =~ m{ / perl-[\d.]+ \.tar \.(?: gz|bz2 ) $ }mx;
-}
-
-#-------------------------------------------------------------------------------
-
-=func is_vcs_file( $path );
-
-Returns true if C<$path> appears to point to a file that is an
-internal part of a version control system.
-
-=cut
-
-Readonly my %VCS_FILES => (map {$_ => 1} qw(.svn .git .gitignore CVS));
-
-sub is_vcs_file {
-    my ($file) = @_;
-
-    $file = file($file) unless eval { $file->isa('Path::Class::File') };
-
-    return exists $VCS_FILES{ $file->basename() };
 }
 
 #-------------------------------------------------------------------------------
@@ -514,21 +496,6 @@ sub mksymlink {
 
 #-------------------------------------------------------------------------------
 
-=func is_stack_all($stack_name)
-
-Returns true if the given C<$stack_name> matches the name of the magical
-C<STACK_ALL> which represents all stacks.
-
-=cut
-
-sub is_stack_all {
-    my $stack_name = shift;
-
-    return defined $stack_name && $stack_name eq $PINTO_STACK_NAME_ALL;
-}
-
-#-------------------------------------------------------------------------------
-
 =func is_system_prop($string)
 
 Returns true if C<$string> is the name of a system property.
@@ -555,6 +522,52 @@ sub uuid {
   return UUID::Tiny::create_uuid_as_string( UUID::Tiny::UUID_V4 );
 }
 
+
+#-------------------------------------------------------------------------------
+
+sub user_colors {
+    my $list = $ENV{PINTO_COLORS} || $ENV{PINTO_COLOURS};
+
+    return $PINTO_DEFAULT_COLORS if not $list;
+
+    return [ split m/\s*,\s*/, $list ];
+}
+
+#-------------------------------------------------------------------------------
+
+=func debug( $message )
+
+=func debug( sub {...} )
+
+Writes the message on STDERR if the C<PINTO_DEBUG> environment variable is true.
+If the argument is a subroutine, it will be invoked and its output will be
+written instead.  Always returns true.
+
+=cut
+
+sub debug {
+    my ($it) = @_;
+
+    # TODO: Use Carp instead?
+
+    return 1 if not $ENV{PINTO_DEBUG};
+
+    $it = $it->() if ref $it eq 'CODE';
+    my ($file, $line) = (caller)[1,2];
+    print { *STDERR } "$it in $file at line $line\n";
+
+    return 1;
+}
+
+#-------------------------------------------------------------------------------
+
+sub whine {
+    my ($message) = @_;
+
+    warn $message . "\n";
+
+    return 1;
+}
 
 #-------------------------------------------------------------------------------
 1;
