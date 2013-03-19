@@ -3,10 +3,16 @@
 package Pinto::PackageSpec;
 
 use Moose;
-
+use MooseX::MarkAsMethods (autoclean => 1);
 use MooseX::Types::Moose qw(Str);
-use Pinto::Types qw(Version);
 
+use Module::Corelist;
+use English qw(-no_match_vars);
+
+use Pinto::Types qw(Version);
+use Pinto::Exception qw(throw);
+
+use version;
 use overload ('""' => 'to_string');
 
 #------------------------------------------------------------------------------
@@ -45,6 +51,22 @@ around BUILDARGS => sub {
 };
 
 #------------------------------------------------------------------------------
+
+sub is_core {
+    my ($self, %args) = @_;
+
+    my $pv = version->parse($args{in}) || $PERL_VERSION;
+    my $core_modules = $Module::CoreList::version{ $pv->numify + 0 };
+
+    throw "Invalid perl version $pv" if not $core_modules;
+
+    return 0 if not exists $core_modules->{$self->name};
+    return 0 if $self->version > $core_modules->{$self->name};
+    return 1;
+}
+
+
+#-------------------------------------------------------------------------------
 
 =method to_string()
 
