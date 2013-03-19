@@ -68,6 +68,14 @@ sub is_core {
 
 #-------------------------------------------------------------------------------
 
+sub is_perl {
+    my ($self) = @_;
+
+    return $self->name eq 'perl' ? 1 : 0;
+}
+
+#-------------------------------------------------------------------------------
+
 =method to_string()
 
 Serializes this PackageSpec to its string form.  This method is called
