@@ -1,6 +1,17 @@
 {{$NEXT}}
 
+    !! DEVELOPER RELEASE !!
+
+    Added some more utility functions, mostly for Pinto::Chrome.
+
+    PackageSpec now has is_core() and is_perl() convenience methods.
+
+    This is probably not compatible with any existing Pinto::Server 
+    or Pinto::Remote.  I'll release new versions of those soon.
+
 0.065_01  2013-03-15 16:06:23 America/Los_Angeles
+
+    !! DEVELOPER RELEASE !!
 
     Added PkgSpecList and DistSpecList types.
 
