@@ -29,9 +29,10 @@ Readonly our @EXPORT_OK => qw(
     $PINTO_SERVER_RESPONSE_EPILOGUE
     $PINTO_SERVER_RESPONSE_LINE_PREFIX
 
-    $PINTO_DEFAULT_LOG_COLORS
-
-    $PINTO_REPOSITORY_ROOT_ENV_VAR
+    $PINTO_DEFAULT_COLORS
+    $PINTO_COLOR_0
+    $PINTO_COLOR_1
+    $PINTO_COLOR_2
 
     $PINTO_STACK_NAME_ALL
 
@@ -42,7 +43,12 @@ Readonly our @EXPORT_OK => qw(
     $PINTO_REVISION_ID_REGEX
 );
 
-Readonly our %EXPORT_TAGS => ( all => \@EXPORT_OK );
+Readonly our %EXPORT_TAGS => ( 
+    all    => \@EXPORT_OK,
+    color  => [ grep { m/COLOR/x }  @EXPORT_OK ],
+    server => [ grep { m/SERVER/x } @EXPORT_OK ],
+    regex  => [ grep { m/REGEX/x }  @EXPORT_OK ],
+);
 
 #------------------------------------------------------------------------------
 
@@ -74,21 +80,11 @@ Readonly our $PINTO_SERVER_RESPONSE_EPILOGUE =>
 
 #------------------------------------------------------------------------------
 
-my $COLOR_NORMAL      = { text => undef,    background => undef };
-my $COLOR_BOLD_YELLOW = { text => 'yellow', background => undef, bold => 1 };
-my $COLOR_BOLD_RED    = { text => 'red',    background => undef, bold => 1 };
+Readonly our $PINTO_DEFAULT_COLORS => [ qw(green yellow red) ];
 
-Readonly our $PINTO_DEFAULT_LOG_COLORS => { debug    => $COLOR_NORMAL,
-                                            info     => $COLOR_NORMAL,
-                                            notice   => $COLOR_NORMAL,
-                                            warning  => $COLOR_BOLD_YELLOW,
-                                            error    => $COLOR_BOLD_RED,
-                                            critical => $COLOR_BOLD_RED };
-
-
-#------------------------------------------------------------------------------
-
-Readonly our $PINTO_REPOSITORY_ROOT_ENV_VAR  => 'PINTO_REPOSITORY_ROOT';
+Readonly our $PINTO_COLOR_0 => 0;
+Readonly our $PINTO_COLOR_1 => 1;
+Readonly our $PINTO_COLOR_2 => 2;
 
 #------------------------------------------------------------------------------
 
@@ -96,8 +92,8 @@ Readonly our $PINTO_STACK_NAME_ALL  => '%';
 
 #------------------------------------------------------------------------------
 
-Readonly my $PINTO_ALPHANUMERIC_REGEX  => qr{^ [a-zA-Z0-9-_]+ $}x;
-Readonly my $PINTO_HEXADECIMAL_UUID_REGEX   => qr{^ [a-f0-9-]+ $}x;
+Readonly my $PINTO_ALPHANUMERIC_REGEX       => qr{^ [a-zA-Z0-9-_]+ $}x;
+Readonly my $PINTO_HEXADECIMAL_UUID_REGEX   => qr{^ [a-f0-9-]+     $}x;
 
 Readonly our $PINTO_AUTHOR_REGEX        => $PINTO_ALPHANUMERIC_REGEX;
 Readonly our $PINTO_USERNAME_REGEX      => $PINTO_ALPHANUMERIC_REGEX;
