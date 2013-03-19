@@ -526,11 +526,11 @@ sub uuid {
 #-------------------------------------------------------------------------------
 
 sub user_colors {
-    my $list = $ENV{PINTO_COLORS} || $ENV{PINTO_COLOURS};
+    my $colors = $ENV{PINTO_COLORS} || $ENV{PINTO_COLOURS};
 
-    return $PINTO_DEFAULT_COLORS if not $list;
+    return $PINTO_DEFAULT_COLORS if not $colors;
 
-    return [ split m/\s*,\s*/, $list ];
+    return [ split m/\s* , \s*/x, $colors ];
 }
 
 #-------------------------------------------------------------------------------
