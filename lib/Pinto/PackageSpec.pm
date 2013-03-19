@@ -55,6 +55,8 @@ around BUILDARGS => sub {
 sub is_core {
     my ($self, %args) = @_;
 
+    ## no critic qw(PackageVar);
+
     my $pv = version->parse($args{in}) || $PERL_VERSION;
     my $core_modules = $Module::CoreList::version{ $pv->numify + 0 };
 

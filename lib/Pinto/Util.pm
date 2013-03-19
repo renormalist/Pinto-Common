@@ -561,8 +561,17 @@ sub debug {
 
 #-------------------------------------------------------------------------------
 
+=func whine( $message )
+
+Just calls warn(), but always appends the newline so that line numbers are
+suppressed.
+
+=cut
+
 sub whine {
     my ($message) = @_;
+
+    chomp $message;
 
     warn $message . "\n";
 
