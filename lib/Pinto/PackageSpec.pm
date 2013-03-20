@@ -56,7 +56,7 @@ around BUILDARGS => sub {
 
 =method is_core(in => $version)
 
-Returns true if this package is satsfied by the perl core as-of a particular
+Returns true if this package is satisfied by the perl core as-of a particular
 version.  If the version is not specified, it defaults to whatever version
 you are using now.
 

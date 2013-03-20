@@ -63,8 +63,8 @@ Readonly our %EXPORT_TAGS => ( all => \@EXPORT_OK );
 
 =func throw($exception_object)
 
-Throws a L<Pinto::Exception> with the given message.  If given an existing
-L<Pinto::Exception>, then it just rethrows it.
+Throws a L<Pinto::Exception> with the given message.  If given a reference
+to a L<Pinto::Exception> object, then it just throws it again.
 
 =cut
 
@@ -597,7 +597,7 @@ sub uuid {
 
 Returns a reference to an array containing the names of the colors pinto 
 can use.  This can be influenced by setting the C<PINTO_COLORS> or 
-C<PINTO_COLOURS> envrionment variables.
+C<PINTO_COLOURS> environment variables.
 
 =cut
 
