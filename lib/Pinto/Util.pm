@@ -63,6 +63,8 @@ Readonly our %EXPORT_TAGS => ( all => \@EXPORT_OK );
 sub throw {
     my ($error) = @_;
 
+    die $error if itis($error, 'Pinto::Exception'); # Rethrowing
+
     require Pinto::Exception;
     Pinto::Exception->throw(message => $error);
 
