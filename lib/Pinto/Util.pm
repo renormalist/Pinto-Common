@@ -71,7 +71,8 @@ to a L<Pinto::Exception> object, then it just throws it again.
 sub throw {
     my ($error) = @_;
 
-    die $error if itis($error, 'Pinto::Exception'); # Rethrowing
+    # Rethrowing...
+    die $error if itis($error, 'Pinto::Exception');  ## no critic (Carping)
 
     require Pinto::Exception;
     Pinto::Exception->throw(message => $error);
