@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+    !! DEVELOPER RELEASE !!
+
+    Added LOCK_TYPE constants.
+
 0.065_02  2013-03-19 15:06:03 America/Los_Angeles
 
     !! DEVELOPER RELEASE !!
