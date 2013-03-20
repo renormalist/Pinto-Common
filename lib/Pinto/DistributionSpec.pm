@@ -3,9 +3,11 @@
 package Pinto::DistributionSpec;
 
 use Moose;
-
+use MooseX::MarkAsMethods (autoclean => 1);
 use MooseX::Types::Moose qw(ArrayRef Str);
+
 use Pinto::Types qw(AuthorID);
+use Pinto::Util qw(throw);
 
 use overload ('""' => 'to_string');
 
@@ -59,7 +61,7 @@ around BUILDARGS => sub {
         my $archive  = pop @path_parts;    # Last element
         my $subdirs  = [ @path_parts ];    # Everything else
 
-        confess "Invalid distribution spec: $args[0]"
+        throw "Invalid distribution spec: $args[0]"
             if not ($author and $archive);
 
         @args = (author => $author, subdirs => $subdirs, archive => $archive);

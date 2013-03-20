@@ -4,11 +4,11 @@ package Pinto::SpecFactory;
 
 use strict;
 use warnings;
+use namespace::autoclean;
 
-use Carp;
 use Class::Load;
 
-use namespace::autoclean;
+use Pinto::Util qw(throw); 
 
 #-------------------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ sub make_spec {
     }
     else {
 
-      croak "Don't know how to make spec from $arg";
+      throw "Don't know how to make spec from $arg";
     }
 
     Class::Load::load_class($spec_class);

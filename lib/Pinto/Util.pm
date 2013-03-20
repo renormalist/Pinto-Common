@@ -307,7 +307,7 @@ sub current_username {
 
     my $username =  $ENV{PINTO_USERNAME} || $ENV{USER} || $ENV{LOGIN} || $ENV{USERNAME} || $ENV{LOGNAME};
 
-    croak "Unable to determine your username.  Set PINTO_USERNAME." if not $username;
+    throw "Unable to determine your username.  Set PINTO_USERNAME." if not $username;
 
     return $username
 }
@@ -498,7 +498,8 @@ sub mksymlink {
     my ($from, $to) = @_;
 
     # TODO: Try to add Win32 support here, somehow.
-    symlink $to, $from or croak "symlink to $to from $from failed: $!";
+    debug "Linking $to to $from";
+    symlink $to, $from or throw "symlink to $to from $from failed: $!";
 
     return 1;
 }
@@ -580,8 +581,12 @@ suppressed.
 sub whine {
     my ($message) = @_;
 
-    chomp $message;
+    if ($ENV{DEBUG}) {
+        Carp::cluck($message);
+        return 1;
+    }
 
+    chomp $message;
     warn $message . "\n";
 
     return 1;
