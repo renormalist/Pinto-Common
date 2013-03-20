@@ -72,6 +72,55 @@ sub throw {
 
 #-------------------------------------------------------------------------------
 
+=func debug( $message )
+
+=func debug( sub {...} )
+
+Writes the message on STDERR if the C<PINTO_DEBUG> environment variable is true.
+If the argument is a subroutine, it will be invoked and its output will be
+written instead.  Always returns true.
+
+=cut
+
+sub debug {
+    my ($it) = @_;
+
+    # TODO: Use Carp instead?
+
+    return 1 if not $ENV{PINTO_DEBUG};
+
+    $it = $it->() if ref $it eq 'CODE';
+    my ($file, $line) = (caller)[1,2];
+    print { *STDERR } "$it in $file at line $line\n";
+
+    return 1;
+}
+
+#-------------------------------------------------------------------------------
+
+=func whine( $message )
+
+Just calls warn(), but always appends the newline so that line numbers are
+suppressed.
+
+=cut
+
+sub whine {
+    my ($message) = @_;
+
+    if ($ENV{DEBUG}) {
+        Carp::cluck($message);
+        return 1;
+    }
+
+    chomp $message;
+    warn $message . "\n";
+
+    return 1;
+}
+
+#-------------------------------------------------------------------------------
+
 =func author_dir( @base, $author )
 
 Given the name of an C<$author>, returns the directory where the
@@ -541,55 +590,6 @@ sub user_colors {
     return $PINTO_DEFAULT_COLORS if not $colors;
 
     return [ split m/\s* , \s*/x, $colors ];
-}
-
-#-------------------------------------------------------------------------------
-
-=func debug( $message )
-
-=func debug( sub {...} )
-
-Writes the message on STDERR if the C<PINTO_DEBUG> environment variable is true.
-If the argument is a subroutine, it will be invoked and its output will be
-written instead.  Always returns true.
-
-=cut
-
-sub debug {
-    my ($it) = @_;
-
-    # TODO: Use Carp instead?
-
-    return 1 if not $ENV{PINTO_DEBUG};
-
-    $it = $it->() if ref $it eq 'CODE';
-    my ($file, $line) = (caller)[1,2];
-    print { *STDERR } "$it in $file at line $line\n";
-
-    return 1;
-}
-
-#-------------------------------------------------------------------------------
-
-=func whine( $message )
-
-Just calls warn(), but always appends the newline so that line numbers are
-suppressed.
-
-=cut
-
-sub whine {
-    my ($message) = @_;
-
-    if ($ENV{DEBUG}) {
-        Carp::cluck($message);
-        return 1;
-    }
-
-    chomp $message;
-    warn $message . "\n";
-
-    return 1;
 }
 
 #-------------------------------------------------------------------------------
