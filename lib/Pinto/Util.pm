@@ -18,7 +18,6 @@ use IO::Interactive;
 use Readonly;
 
 use Pinto::Globals;
-use Pinto::Exception;
 use Pinto::Constants qw(:all);
 
 #-------------------------------------------------------------------------------
@@ -132,7 +131,7 @@ sub parse_dist_path {
         return ($author, $archive);
     }
 
-    confess "Unable to parse path: $path";
+    throw "Unable to parse path: $path";
 }
 
 #-------------------------------------------------------------------------------
@@ -164,8 +163,8 @@ be thrown.
 sub mtime {
     my ($file) = @_;
 
-    confess 'Must supply a file' if not $file;
-    confess "$file does not exist" if not -e $file;
+    throw 'Must supply a file' if not $file;
+    throw "$file does not exist" if not -e $file;
 
     return (stat $file)[9];
 }
@@ -183,8 +182,8 @@ thrown.
 sub md5 {
     my ($file) = @_;
 
-    confess 'Must supply a file' if not $file;
-    confess "$file does not exist" if not -e $file;
+    throw 'Must supply a file' if not $file;
+    throw "$file does not exist" if not -e $file;
 
     my $fh = $file->openr();
     my $md5 = Digest::MD5->new->addfile($fh)->hexdigest();
@@ -205,8 +204,8 @@ thrown.
 sub sha256 {
     my ($file) = @_;
 
-    confess 'Must supply a file' if not $file;
-    confess "$file does not exist" if not -e $file;
+    throw 'Must supply a file' if not $file;
+    throw "$file does not exist" if not -e $file;
 
     my $fh = $file->openr();
     my $sha256 = Digest::SHA->new(256)->addfile($fh)->hexdigest();
