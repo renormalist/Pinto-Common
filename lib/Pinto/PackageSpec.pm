@@ -10,7 +10,7 @@ use Module::Corelist;
 use English qw(-no_match_vars);
 
 use Pinto::Types qw(Version);
-use Pinto::Exception qw(throw);
+use Pinto::Util qw(throw);
 
 use version;
 use overload ('""' => 'to_string');

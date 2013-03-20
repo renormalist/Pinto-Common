@@ -5,10 +5,10 @@ package Pinto::Util;
 use strict;
 use warnings;
 use version;
+use base qw(Exporter);
 
 use Carp;
 use DateTime;
-use Try::Tiny;
 use Path::Class;
 use Digest::MD5;
 use Digest::SHA;
@@ -18,12 +18,8 @@ use IO::Interactive;
 use Readonly;
 
 use Pinto::Globals;
+use Pinto::Exception;
 use Pinto::Constants qw(:all);
-use Pinto::Exception qw(throw);
-
-use namespace::autoclean;
-
-use base qw(Exporter);
 
 #-------------------------------------------------------------------------------
 
@@ -52,6 +48,7 @@ Readonly our @EXPORT_OK => qw(
     parse_dist_path
     sha256
     title_text
+    throw
     trim_text
     truncate_text
     user_colors
@@ -60,6 +57,17 @@ Readonly our @EXPORT_OK => qw(
 );
 
 Readonly our %EXPORT_TAGS => ( all => \@EXPORT_OK );
+
+#-------------------------------------------------------------------------------
+
+sub throw {
+    my ($error) = @_;
+
+    require Pinto::Exception;
+    Pinto::Exception->throw(message => $error);
+
+    return; # Should never get here
+}
 
 #-------------------------------------------------------------------------------
 
