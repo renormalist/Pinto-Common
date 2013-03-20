@@ -52,6 +52,16 @@ around BUILDARGS => sub {
 
 #------------------------------------------------------------------------------
 
+=method is_core
+
+=method is_core(in => $version)
+
+Returns true if this package is satsfied by the perl core as-of a particular
+version.  If the version is not specified, it defaults to whatever version
+you are using now.
+
+=cut
+
 sub is_core {
     my ($self, %args) = @_;
 
@@ -67,8 +77,13 @@ sub is_core {
     return 1;
 }
 
-
 #-------------------------------------------------------------------------------
+
+=method is_perl()
+
+Returns true if this package is perl itself.
+
+=cut
 
 sub is_perl {
     my ($self) = @_;
