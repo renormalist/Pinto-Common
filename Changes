@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+    !! DEVELOPER RELEASE !!
+
+    Added some more text munging utility functions.
+
 0.065_03  2013-03-20 15:44:42 America/Los_Angeles
 
     !! DEVELOPER RELEASE !!
