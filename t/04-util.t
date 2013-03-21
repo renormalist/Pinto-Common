@@ -116,10 +116,20 @@ use Pinto::Util qw(:all);
   is( truncate_text("foobar", 3),           "foo..." );
   is( truncate_text("foobar", 6),           "foobar" );
   is( truncate_text("foobar", 0),           "foobar" );
-  is( truncate_text("foobar", 3, '-'),      "foo-" );
+  is( truncate_text("foobar", 3, '-'),      "foo-"   );
 
 }
 
+#-----------------------------------------------------------------------------
+
+{
+
+  is( is_blank(),               1 );
+  is( is_blank(""),             1 );
+  is( is_blank(" \n\t\r\f "),   1 );
+  is( is_blank("foo"),          0 );
+
+}
 #-----------------------------------------------------------------------------
 
 done_testing;

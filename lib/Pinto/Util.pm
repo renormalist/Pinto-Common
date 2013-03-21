@@ -37,6 +37,8 @@ Readonly our @EXPORT_OK => qw(
     decamelize
     indent_text
     interpolate
+    is_blank
+    is_not_blank
     is_interactive
     is_system_prop
     isa_perl
@@ -608,6 +610,36 @@ sub user_colors {
     return $PINTO_DEFAULT_COLORS if not $colors;
 
     return [ split m/\s* , \s*/x, $colors ];
+}
+
+#-------------------------------------------------------------------------------
+
+=func is_blank($string)
+
+Returns true if the string is undefined, empty, or contains only whitespace.
+
+=cut
+
+sub is_blank {
+    my ($string) = @_;
+
+    return 1 if not $string;
+    return 0 if $string =~ m/ \S /x;
+    return 1;
+}
+
+#-------------------------------------------------------------------------------
+
+=func is_not_blank($string)
+
+Returns true if the string contains any non-whitespace characters.
+
+=cut
+
+sub is_not_blank {
+    my ($string) = @_;
+
+    return ! is_blank($string);
 }
 
 #-------------------------------------------------------------------------------
