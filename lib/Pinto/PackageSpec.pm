@@ -6,7 +6,7 @@ use Moose;
 use MooseX::MarkAsMethods (autoclean => 1);
 use MooseX::Types::Moose qw(Str);
 
-use Module::Corelist;
+use Module::CoreList;
 use English qw(-no_match_vars);
 
 use Pinto::Types qw(Version);
