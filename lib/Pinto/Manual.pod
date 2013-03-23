@@ -25,6 +25,10 @@ The manual consists of the following documents
 
 Explains the goals, terminology, and concepts in L<Pinto>.
 
+=item L<Pinto::Manual::Installing>
+
+Some suggestions for installing L<Pinto>.
+
 =item L<Pinto::Manual::Tutorial>
 
 Presents a narrative explanation of how to use L<Pinto>.
