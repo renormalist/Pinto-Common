@@ -77,7 +77,7 @@ sub throw {
     die $error if itis($error, 'Pinto::Exception');  ## no critic (Carping)
 
     require Pinto::Exception;
-    Pinto::Exception->throw(message => $error);
+    Pinto::Exception->throw(message => "$error");
 
     return; # Should never get here
 }
