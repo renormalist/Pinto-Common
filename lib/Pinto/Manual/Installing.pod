@@ -55,7 +55,7 @@ For the reasons above, I recommend installing Pinto as a stand-alone
 application in its own sandbox.  That way, it doesn't pollute your 
 environment with its dependencies.  Nor will you pollute Pinto with changes to
 your environment, so Pinto will function even when your other environment 
-depencencies are broken. And hopefully, you can use Pinto to help fix whatever
+dependencies are broken. And hopefully, you can use Pinto to help fix whatever
 broke!
 
 =head2 Step 1: Install With cpanm
