@@ -1,61 +1,43 @@
 {{$NEXT}}
 
+    * Added LOCK_TYPE constants.
+
+    * Added PkgSpecList and DistSpecList types.
+
+    * Added Username and RevisionID types.
+
+    * Specs type has been renamed to SpecList.
+
+    * Files type has been renamed to FileList.
+
+    * Author type has been renamed to AuthorID
+
+    * Added several new utility functions used by Pinto.
+
+    * PackageSpec now has is_core() and is_perl() convenience methods.
+
+    * Rewrote functions for handling errors & warnings.
+
 0.065_04  2013-03-20 22:50:55 America/Los_Angeles
-
-    !! DEVELOPER RELEASE !!
-
-    Added some more text munging utility functions.
-
-    Fixed bug in dependencies: Module::Corelist should be Module::CoreList
-
 0.065_03  2013-03-20 15:44:42 America/Los_Angeles
-
-    !! DEVELOPER RELEASE !!
-
-    Added LOCK_TYPE constants.
-
-    Rewrote functions for handling errors & warnings.
-
 0.065_02  2013-03-19 15:06:03 America/Los_Angeles
-
-    !! DEVELOPER RELEASE !!
-
-    Added some more utility functions, mostly for Pinto::Chrome.
-
-    PackageSpec now has is_core() and is_perl() convenience methods.
-
-    This is probably not compatible with any existing Pinto::Server 
-    or Pinto::Remote.  I'll release new versions of those soon.
-
 0.065_01  2013-03-15 16:06:23 America/Los_Angeles
 
-    !! DEVELOPER RELEASE !!
-
-    Added PkgSpecList and DistSpecList types.
-
-    Added Username and RevisionID types.
-
-    Specs type has been renamed to SpecList.
-
-    Files type has been renamed to FileList.
-
-    Author type has been renamed to AuthorID
-
-    Added several new utility functions used by Pinto.
+    * Changes consolidate above under release 0.066
 
 0.064     2012-11-14 00:22:32 America/Los_Angeles
 
-     Added a couple utility functions I need in Pinto.
+     * Added a couple utility functions I need in Pinto.
 
 0.063     2012-11-08 09:32:10 America/Los_Angeles
 
-     Added StackObject type.
+     * Added StackObject type.
 
-     Fixed typo that resulted in syntax error (thanks Schwern).
+     * Fixed typo that resulted in syntax error (thanks Schwern).
 
 0.062     2012-11-07 01:21:34 America/Los_Angeles
 
-     This distribution now contains Pinto::Util, which
+     * This distribution now contains Pinto::Util, which
      used to be part of the Pinto core.  To make PAUSE
      happy, it needs to have a higher version number than
      the last release when it was in the Pinto core. Hence
@@ -64,49 +46,49 @@
 
 0.050     2012-10-22 12:34:27 America/Los_Angeles
 
-     Revised documentation.
+     * Revised documentation.
 
 0.049     2012-10-20 00:02:17 America/Los_Angeles
 
-     Author, StackName, and PropertyName types are no longer
+     * Author, StackName, and PropertyName types are no longer
      to be in all lower or upper case. 
 
 0.048     2012-09-20 12:21:53 America/Los_Angeles
 
-     Revised and expanded documentation to cover new commands.
+     * Revised and expanded documentation to cover new commands.
 
 0.047     2012-09-17 13:07:15 America/Los_Angeles
 
-     Prevent 'uninitialized' warnings in type constraints.
+     * Prevent 'uninitialized' warnings in type constraints.
 
 0.046     2012-08-21 21:22:22 America/Los_Angeles
 
-     Just documentation edits.
+     * Just documentation edits.
 
 0.045     2012-07-15 01:21:02 America/Los_Angeles
 
-     Added StackAt and StackDefault types.
+     * Added StackAt and StackDefault types.
 
 0.044     2012-05-21 23:28:19 America/Los_Angeles
 
-     Moved Pinto::Role::PauseConfig over from Pinto-Core.
+     * Moved Pinto::Role::PauseConfig over from Pinto-Core.
      This module is also needed by the D::Z plugin.
 
 0.043     2012-05-17 22:12:42 America/Los_Angeles
 
-     Added a Pinto::Manual::Introduction to explain
+     * Added a Pinto::Manual::Introduction to explain
      some whys and wheres.
 
 0.042     2012-05-15 11:43:35 America/Los_Angeles
 
-     Added a main Pinto::Manual page, that redirects you
+     * Added a main Pinto::Manual page, that redirects you
      to Pinto::Manual::Tutorial or Pinto::Manual::QuickStart
 
 0.041     2012-05-15 11:07:07 America/Los_Angeles
 
-     Removed unused roles and classes.
+     * Removed unused roles and classes.
 
-     Added StackName and PropertyName types.
+     * Added StackName and PropertyName types.
 
 0.038     2012-04-24 22:02:17 America/Los_Angeles
 
