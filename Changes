@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+    No code changes.  Just fine-tuning dependency versions. 
+
+    Thank you CPAN Testers!
+
 0.066     2013-03-25 21:06:00 America/Los_Angeles
 
     * Added LOCK_TYPE constants.
