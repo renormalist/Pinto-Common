@@ -4,6 +4,9 @@
     
     * Revised Pinto::Manual::Installing.
 
+    * Now requires Module::Corelist 2.85 or later, so you can target perls
+    even newer than the one you have.
+
 0.067     2013-03-28 20:26:28 America/Los_Angeles
 
     * No code changes.  Just fine-tuning dependency versions. Thank you 
