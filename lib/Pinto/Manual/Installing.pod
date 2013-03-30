@@ -13,15 +13,15 @@ __END__
 
 =pod
 
-=for stopwords Stratopan Perlbrew cpanm
+=for stopwords Perlbrew cpanm
 
 =head1 SYNOPSIS
 
-For the impatient (bash)...
+For the impatient...
 
+  curl -L http://getpinto.stratopan.com | bash
   export PINTO_HOME=$HOME/opt/local/pinto
   export PATH=$PINTO_HOME/bin:$PATH
-  cpanm -L $PINTO_HOME Pinto App::Pinto
 
 And then possibly...
 
@@ -58,21 +58,25 @@ your environment, so Pinto will function even when your other environment
 dependencies are broken. And hopefully, you can use Pinto to help fix whatever
 broke!
 
-=head2 Step 1: Install With cpanm
+=head2 Step 1: Run the pinto installer script
 
-Fortunately, L<cpanm> makes it really easy to install things into sandboxes by 
-using the C<--local-lib-contained> option (or C<-L> for short).  To install 
-Pinto into your home directory (at <~/opt/local/pinto> for example) use this
-command:
+The installer script at getpinto.stratopan.com is just a wrapper around 
+cpanm, which installs pinto in a self-contained directory:
 
-  cpanm -L ~/opt/local/pinto Pinto App::Pinto
+   # If you have curl...
+   curl -L http://getpinto.stratopan.com | bash
 
-=head2 Step 2: Set PINTO_HOME
+   # If you use wget...
+   wget -O - http://getpinto.stratopan.com | bash
 
-When you've installed Pinto into a sandbox (that is, outside of your typical
-perl library directories), you also need to set the C<PINTO_HOME> environment
-variable so that the L<pinto> command can find it's libraries.  Since we
-installed into F<~/opt/local/pinto> then that's where we set it:
+All the dependent modules will come from a curated repository on 
+L<stratopan.com|http://stratopan.com>.  These aren't always the latest 
+versions of things, but they are versions that I know will work.
+
+=head2 Step 2: Set the PINTO_HOME environment variable
+
+The pinto installer puts pinto I<outside> of the default Perl environment.  
+So you need to tell pinto where it lives:
 
   export PINTO_HOME=$HOME/opt/local/pinto
 
@@ -81,9 +85,9 @@ It lives in the C<bin> directory inside C<PINTO_HOME>:
 
   export PATH=$PINTO_HOME/bin:$PATH
 
-To make these settings part of your normal shell environment, just add those
-last two commands to F<~/.bashrc> or F<~/.cshrc> or whatever setup file is 
-appropriate for your shell.
+To make these settings part of your everyday shell environment, just add 
+those two C<export> commands to your F<~/.bashrc> or F<~/.cshrc> or 
+whatever setup file is appropriate for your shell.
 
 =head2 INSTALLING AS A LIBRARY
 
@@ -102,7 +106,7 @@ to help you.
 Naturally, installation procedures will vary from one environment to another.
 If this procedure doesn't work for you, or if you'd like to suggest a 
 procedure for a different environment (e.g. Windows, Perlbrew, Strawberry
-Perl, etc.), then please contact the author.  Your contributions would be
-appreciated greatly.
+Perl, etc.), then please contact me.  Your contributions would be greatly
+appreciated.
 
 =cut
