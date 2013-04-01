@@ -89,7 +89,7 @@ To make these settings part of your everyday shell environment, just add
 those two C<export> commands to your F<~/.bashrc> or F<~/.cshrc> or 
 whatever setup file is appropriate for your shell.
 
-=head2 INSTALLING AS A LIBRARY
+=head1 INSTALLING AS A LIBRARY
 
 If you're going to be hacking on Pinto itself, or want to try building on 
 the API directly, then you can install Pinto straight into your development
