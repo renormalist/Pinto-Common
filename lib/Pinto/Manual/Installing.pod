@@ -20,13 +20,11 @@ __END__
 For the impatient...
 
   curl -L http://getpinto.stratopan.com | bash
-  export PINTO_HOME=$HOME/opt/local/pinto
-  export PATH=$PINTO_HOME/bin:$PATH
+  source ~/opt/local/pinto/etc/bashrc
 
 And then possibly...
 
-  echo export PINTO_HOME=\$HOME/opt/local/pinto >> ~/.bashrc
-  echo export PATH=$PINTO_HOME/bin:$PATH >> ~/.bashrc
+  echo source ~/opt/local/pinto/etc/bashrc >> ~/.bashrc
 
 =head1 App::Pinto and Pinto (and Pinto::Remote)
 
@@ -73,21 +71,22 @@ All the dependent modules will come from a curated repository on
 L<stratopan.com|http://stratopan.com>.  These aren't always the latest 
 versions of things, but they are versions that I know will work.
 
-=head2 Step 2: Set the PINTO_HOME environment variable
+=head2 Step 2: Setup the pinto environment
 
-The pinto installer puts pinto I<outside> of the default Perl environment.  
-So you need to tell pinto where it lives:
+The pinto installer generates a setup script for you.  By default, it
+is located at F<~/opt/local/pinto/etc/bashrc>.  To load that setup into
+your current shell, just give this command:
 
-  export PINTO_HOME=$HOME/opt/local/pinto
-
-For convenience, you'll probably also want C<pinto> to be in your C<PATH>.
-It lives in the C<bin> directory inside C<PINTO_HOME>:
-
-  export PATH=$PINTO_HOME/bin:$PATH
+  source ~/opt/local/pinto/etc/bashrc
 
 To make these settings part of your everyday shell environment, just add 
-those two C<export> commands to your F<~/.bashrc> or F<~/.cshrc> or 
-whatever setup file is appropriate for your shell.
+that last command to your F<~/.profile> or F<~/.bashrc> or whatever setup 
+file is appropriate for your shell.
+
+If you wish to customize any of the other environment variables that
+pinto uses, you can place those commands in F<~/.pintorc>.  If that file
+exists, the setup script will source them as well.  See L<pinto> for
+a list of the relevant environment variables.
 
 =head1 INSTALLING AS A LIBRARY
 
@@ -108,5 +107,15 @@ If this procedure doesn't work for you, or if you'd like to suggest a
 procedure for a different environment (e.g. Windows, Perlbrew, Strawberry
 Perl, etc.), then please contact me.  Your contributions would be greatly
 appreciated.
+
+=head1 SEE ALSO
+
+L<Pinto::Manual::QuickStart>
+
+L<Pinto::Manual::Tutorial>
+
+L<Pinto> (the library)
+
+L<pinto> (the command)
 
 =cut
