@@ -73,7 +73,12 @@ sub is_core {
     throw "Invalid perl version $pv" if not $core_modules;
 
     return 0 if not exists $core_modules->{$self->name};
-    return 0 if $self->version > ($core_modules->{$self->name} || 0);  # prevent 'unitialized' warning
+
+    # on some perls, we'll get an 'uninitialized' warning when
+    # the $core_version is undef.  So force to zero in that case
+    my $core_version = $core_modules->{$self->name} || 0;
+
+    return 0 if $self->version > $core_version;
     return 1;
 }
 
