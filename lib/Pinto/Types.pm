@@ -4,6 +4,7 @@ package Pinto::Types;
 
 use strict;
 use warnings;
+use version;
 
 use MooseX::Types -declare => [ qw( AuthorID Username Uri Dir File FileList Io Version
                                     StackName StackAll StackDefault PropertyName PkgSpec
@@ -20,12 +21,8 @@ use IO::String;
 use IO::Handle;
 use IO::File;
 
-
 use Pinto::SpecFactory;
 use Pinto::Constants qw(:all);
-
-use version;
-use namespace::autoclean;
 
 #-----------------------------------------------------------------------------
 
