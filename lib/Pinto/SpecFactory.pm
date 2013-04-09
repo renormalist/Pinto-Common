@@ -4,7 +4,6 @@ package Pinto::SpecFactory;
 
 use strict;
 use warnings;
-use namespace::autoclean;
 
 use Class::Load;
 
